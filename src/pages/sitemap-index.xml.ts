@@ -1,1 +1,13 @@
-aW1wb3J0IHR5cGUgeyBBUElSb3V0ZSB9IGZyb20gJ2FzdHJvJzsKCmV4cG9ydCBjb25zdCBHRVQ6IEFQSVJvdXRlID0gKHsgc2l0ZSB9KSA9PiB7CiAgY29uc3QgaG9tZSA9IG5ldyBVUkwoJy8nLCBzaXRlKTsKICBjb25zdCBib2R5ID0gYDw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9IlVURi04Ij8+Cjx1cmxzZXQgeG1sbnM9Imh0dHA6Ly93d3cuc2l0ZW1hcHMub3JnL3NjaGVtYXMvc2l0ZW1hcC8wLjkiPgogIDx1cmw+PGxvYz4ke2hvbWV9PC9sb2M+PC91cmw+CjwvdXJsc2V0PmA7CgogIHJldHVybiBuZXcgUmVzcG9uc2UoYm9keSwgewogICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL3htbDsgY2hhcnNldD11dGYtOCcgfSwKICB9KTsKfTsK
+import type { APIRoute } from 'astro';
+
+export const GET: APIRoute = ({ site }) => {
+  const home = new URL('/', site);
+  const body = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${home}</loc></url>
+</urlset>`;
+
+  return new Response(body, {
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
+  });
+};
