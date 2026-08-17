@@ -1,1 +1,1 @@
-Ly8vIDxyZWZlcmVuY2UgdHlwZXM9ImFzdHJvL2NsaWVudCIgLz4K
+/// <reference types="astro/client" />
