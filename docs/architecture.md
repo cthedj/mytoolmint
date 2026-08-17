@@ -15,3 +15,7 @@ MyToolMint uses Astro, strict TypeScript and static output. Public content is re
 ## URL indexing policy
 
 Search state may be stored in query parameters for sharing and restoration. Query combinations are not separate indexable pages. The canonical URL for all searches remains `/word-unscrambler`.
+
+## Tool-page layout rule
+
+Every utility page leads with the working tool itself immediately below the global navigation. The tool contains the page's concise H1 and essential instructions. Large editorial hero headings, breadcrumbs or promotional sections must not push the utility below the first viewport. Supporting explanations, examples, FAQs and SEO content follow the functional tool.
