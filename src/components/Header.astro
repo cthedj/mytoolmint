@@ -3,7 +3,7 @@ import Brand from './Brand.astro';
 const path=Astro.url.pathname;
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 const url=(value:string)=>`${base}${value.startsWith('/')?value.slice(1):value}`;
-const links=[['/','Home'],['/word-unscrambler','Unscrambler'],['/tools','Tools'],['/about','About']];
+const links=[['/word-unscrambler','Word Unscrambler'],['/tools','All tools']];
 ---
-<header><div class="container inner"><a class="brand-link" href={url('/')} aria-label="MyToolMint home"><Brand /></a><nav aria-label="Primary navigation">{links.map(([href,label])=><a href={url(href)} aria-current={path===url(href)?'page':undefined}>{label}</a>)}<a class="contact" href={url('/contact')}>Contact</a></nav></div></header>
-<style>header{padding:1rem 0}.inner{display:flex;min-height:3.5rem;align-items:center;justify-content:space-between;gap:1rem}.brand-link{text-decoration:none}nav{display:flex;align-items:center;gap:.25rem}nav a{padding:.6rem .75rem;border-radius:999px;color:var(--navy-2);font-size:.9rem;font-weight:700;text-decoration:none}nav a:hover,nav a[aria-current=page]{background:var(--mint-soft);color:var(--navy)}.contact{border:1px solid var(--border);background:rgb(255 255 255/.65)}@media(max-width:39rem){nav a:not(.contact){display:none}}</style>
+<header><div class="container inner"><a class="brand-link" href={url('/word-unscrambler')} aria-label="MyToolMint Word Unscrambler"><Brand /></a><nav aria-label="Tools">{links.map(([href,label])=><a href={url(href)} aria-current={path===url(href)?'page':undefined}>{label}</a>)}</nav></div></header>
+<style>header{padding:1rem 0}.inner{display:flex;min-height:3.5rem;align-items:center;justify-content:space-between;gap:1rem}.brand-link{text-decoration:none}nav{display:flex;align-items:center;gap:.25rem}nav a{padding:.6rem .75rem;border-radius:999px;color:var(--navy-2);font-size:.9rem;font-weight:700;text-decoration:none}nav a:hover,nav a[aria-current=page]{background:var(--mint-soft);color:var(--navy)}@media(max-width:39rem){nav a{padding:.55rem;font-size:.8rem}nav a:first-child{max-width:7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}</style>
