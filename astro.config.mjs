@@ -1,1 +1,7 @@
-aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAnYXN0cm8vY29uZmlnJzsKCmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7CiAgc2l0ZTogJ2h0dHBzOi8vbXl0b29sbWludC5jb20nLAogIG91dHB1dDogJ3N0YXRpYycsCiAgdHJhaWxpbmdTbGFzaDogJ25ldmVyJywKfSk7Cg==
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  site: 'https://mytoolmint.com',
+  output: 'static',
+  trailingSlash: 'never',
+});
