@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Feature-complete Word Unscrambler interface implemented; launch content and legal review next.
+Launch-readiness hardening complete; production-domain connection and final live checks next.
 
 ## Completed
 
@@ -18,14 +18,18 @@ Feature-complete Word Unscrambler interface implemented; launch content and lega
 - Tested solver engine with filters, sorting, duplicate-letter correctness and tile scoring
 - Mobile-first Word Unscrambler interface with advanced filters, grouped results, copy/share controls and URL-restored searches
 - Original supporting content covering operation, examples, filters, duplicate letters, tips, word-list limitations and FAQs
+- Accurate Privacy, Cookie, Terms and Disclaimer pages for the current no-analytics, no-ads implementation
+- Public word-list, licence and tile-scoring methodology page
+- Production canonical URLs, GitHub-preview noindex protection and appropriate WebSite/WebApplication structured data
+- Automated built-site checks for required routes, metadata, canonicals and heading structure
+- Root URL sends visitors directly to the flagship tool; the marketing landing hero and Home navigation item are removed
 
 ## Immediate next actions
 
-1. Complete full browser, mobile and accessibility tests.
-2. Add and verify Privacy, Cookie, Terms and Disclaimer pages.
-3. Complete technical SEO and launch QA.
-4. Connect `mytoolmint.com` to production hosting.
-5. Configure Search Console after the production domain is live.
+1. Connect `mytoolmint.com` to production hosting.
+2. Run final live-domain browser, mobile and accessibility checks.
+3. Submit the production sitemap and configure Search Console.
+4. Establish a privacy-respecting analytics baseline only if measurement needs justify it.
 
 ## Known issues
 
