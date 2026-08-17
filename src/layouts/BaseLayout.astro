@@ -3,10 +3,13 @@ interface Props {
   title: string;
   description: string;
   canonicalPath?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
-const canonicalUrl = new URL(canonicalPath, Astro.site);
+const { title, description, canonicalPath = Astro.url.pathname, schema } = Astro.props;
+const productionSite = new URL('https://mytoolmint.com');
+const canonicalUrl = new URL(canonicalPath, productionSite);
+const isPreview = Astro.site?.hostname === 'cthedj.github.io';
 const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
 const faviconUrl = `${base}favicon.svg`;
 import Header from '../components/Header.astro';
@@ -21,15 +24,19 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="robots" content={isPreview ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MyToolMint" />
+    <meta property="og:locale" content="en_ZA" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#19b88a" />
     <title>{title}</title>
+    {schema && <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />}
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
