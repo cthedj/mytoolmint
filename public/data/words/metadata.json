@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "https://github.com/en-wl/wordlist-diff",
+  "sourceRelease": "rel-2026.02.25",
+  "sourceFiles": [
+    {
+      "name": "en_US.txt",
+      "sha256": "4ff7e0b6d86763e1e042ffd746e94cdf4432618702deac303a1669e2a838db04"
+    },
+    {
+      "name": "en_GB-ise.txt",
+      "sha256": "82b22843c9958a1efac291e0ea7dbef22ce227dd4e5ca0fd84043cbc62e0a4f1"
+    }
+  ],
+  "filters": {
+    "alphabet": "a-z",
+    "lowercaseOnly": true,
+    "minLength": 2,
+    "maxLength": 21
+  },
+  "wordCount": 81949,
+  "contentSha256": "83dd3de81b4073dff415bf60889cdcf7a10030c9dd228d13348f42e6ae3d13e6",
+  "buckets": {
+    "a": 4492,
+    "b": 4828,
+    "c": 8013,
+    "d": 5298,
+    "e": 3259,
+    "f": 3515,
+    "g": 2641,
+    "h": 2930,
+    "i": 3305,
+    "j": 730,
+    "k": 594,
+    "l": 2437,
+    "m": 4361,
+    "n": 1749,
+    "o": 2114,
+    "p": 6513,
+    "q": 397,
+    "r": 5096,
+    "s": 9367,
+    "t": 4143,
+    "u": 2312,
+    "v": 1237,
+    "w": 2181,
+    "x": 57,
+    "y": 237,
+    "z": 143
+  }
+}
