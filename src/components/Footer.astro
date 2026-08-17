@@ -1,6 +1,8 @@
 ---
 import Brand from './Brand.astro';
 const year=new Date().getFullYear();
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
+const url=(value:string)=>`${base}${value.startsWith('/')?value.slice(1):value}`;
 ---
-<footer><div class="container grid"><div><Brand/><p>Simple tools for everyday problems.</p></div><div class="links"><a href="/tools">Tools</a><a href="/about">About</a><a href="/contact">Contact</a></div><p>© {year} MyToolMint</p></div></footer>
+<footer><div class="container grid"><div><Brand/><p>Simple tools for everyday problems.</p></div><div class="links"><a href={url('/tools')}>Tools</a><a href={url('/about')}>About</a><a href={url('/contact')}>Contact</a></div><p>© {year} MyToolMint</p></div></footer>
 <style>footer{margin-top:clamp(4rem,8vw,7rem);padding:2.75rem 0;border-top:1px solid var(--border);background:rgb(255 255 255/.45)}.grid{display:grid;grid-template-columns:1.4fr 1fr auto;align-items:end;gap:2rem}p{margin:.75rem 0 0;color:var(--muted)}.links{display:flex;flex-wrap:wrap;gap:1rem}.links a{color:var(--muted);font-weight:700;text-decoration:none}.links a:hover{color:var(--mint-dark)}@media(max-width:44rem){.grid{grid-template-columns:1fr;align-items:start}}</style>

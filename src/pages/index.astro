@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 const categories=[['Aa','Word tools','Find, shape and understand words.','First tool in progress'],['%','Calculators','Quick answers without spreadsheet setup.','Planned'],['↔','Converters','Everyday measurements made effortless.','Planned'],['¶','Text tools','Clean, count and transform text.','Planned']];
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 ---
 <BaseLayout title="MyToolMint — Simple tools for everyday problems" description="Fast, friendly online tools for words, calculations, conversions and everyday tasks.">
   <section class="hero container" aria-labelledby="page-title">
-    <div><p class="eyebrow">Useful by design</p><h1 class="display-title" id="page-title">Small tools. Big time-savers.</h1><p class="lead">MyToolMint gives you straightforward, thoughtfully built tools that solve the little problems slowing down your day.</p><div class="actions"><a class="button button-primary" href="#first-tool">Meet our first tool ↓</a><a class="button button-secondary" href="/about">Why MyToolMint?</a></div><ul><li>✓ Free to use</li><li>✓ Fast on mobile</li><li>✓ No sign-up</li></ul></div>
+    <div><p class="eyebrow">Useful by design</p><h1 class="display-title" id="page-title">Small tools. Big time-savers.</h1><p class="lead">MyToolMint gives you straightforward, thoughtfully built tools that solve the little problems slowing down your day.</p><div class="actions"><a class="button button-primary" href="#first-tool">Meet our first tool ↓</a><a class="button button-secondary" href={`${base}about`}>Why MyToolMint?</a></div><ul><li>✓ Free to use</li><li>✓ Fast on mobile</li><li>✓ No sign-up</li></ul></div>
     <div class="art" aria-hidden="true"><div class="orbit"></div><div class="tool one"><span>Letters</span><strong>T R A E S</strong><small>→ 53 words found</small></div><div class="tool two"><span>Quick answer</span><strong>Instant.</strong><small>No waiting around</small></div><i class="spark">✦</i></div>
   </section>
   <section class="first" id="first-tool" aria-labelledby="first-title"><div class="container feature"><div><p class="eyebrow">Launching first</p><h2 id="first-title">A seriously useful Word Unscrambler.</h2><p>Built for speed and clarity—with smart filters, duplicate-letter accuracy, useful sorting and a great mobile experience.</p></div><div class="status"><b aria-hidden="true"></b><div><strong>Currently being minted</strong><span>The full tool is our next build milestone.</span></div></div></div></section>
