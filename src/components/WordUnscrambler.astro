@@ -1,0 +1,106 @@
+---
+const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
+---
+<section class="solver" data-word-unscrambler data-base={base} aria-labelledby="solver-title">
+  <div class="solver-head"><div><p class="eyebrow">Word Unscrambler</p><h2 id="solver-title">Turn your letters into words</h2><p>Enter up to 30 letters. Spaces and punctuation are ignored.</p></div><button class="reset" type="button" data-reset>Clear</button></div>
+  <form data-form novalidate>
+    <label class="main-label" for="letters">Your letters</label>
+    <div class="search-row"><input id="letters" name="letters" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="60" placeholder="For example: TRAES" aria-describedby="letters-help letters-error" required/><button type="submit">Find words <span aria-hidden="true">→</span></button></div>
+    <p id="letters-help" class="help">Tip: repeated letters matter—STATE needs two Ts.</p><p id="letters-error" class="error" data-error role="alert"></p>
+    <details class="filters"><summary>Filters and sorting <span data-filter-count></span></summary><div class="filter-grid">
+      <label>Length filter<select name="lengthMode" data-length-mode><option value="any">Any length</option><option value="exact">Exact length</option><option value="minimum">Minimum length</option><option value="maximum">Maximum length</option><option value="range">Length range</option></select></label>
+      <label data-min-field hidden>Minimum<input name="minLength" type="number" min="2" max="21" inputmode="numeric" value="2"/></label>
+      <label data-max-field hidden>Maximum<input name="maxLength" type="number" min="2" max="21" inputmode="numeric" value="15"/></label>
+      <label data-exact-field hidden>Exact length<input name="exactLength" type="number" min="2" max="21" inputmode="numeric" value="5"/></label>
+      <label>Starts with<input name="startsWith" type="text" inputmode="text" autocomplete="off" placeholder="e.g. ST"/></label>
+      <label>Ends with<input name="endsWith" type="text" inputmode="text" autocomplete="off" placeholder="e.g. ING"/></label>
+      <label>Contains<input name="contains" type="text" inputmode="text" autocomplete="off" placeholder="e.g. EA"/></label>
+      <label>Sort results<select name="sort"><option value="longest">Longest first</option><option value="shortest">Shortest first</option><option value="alphabetical">Alphabetically</option><option value="score">Highest tile score</option></select></label>
+      <label class="check"><input name="grouped" type="checkbox" checked/> Group by word length</label>
+    </div></details>
+  </form>
+  <div class="loading" data-loading hidden><span></span>Checking the MyToolMint word list…</div>
+  <section class="results" data-results hidden aria-labelledby="results-title"><div class="results-head"><div><p class="eyebrow">Results</p><h3 id="results-title"><span data-count>0</span> words found</h3><p data-summary></p></div><div class="result-actions"><button type="button" data-copy-all>Copy all</button><button type="button" data-share>Share search</button></div></div><div class="result-list" data-result-list></div></section>
+  <div class="empty" data-empty hidden><strong>No matching words found</strong><p>Try removing a filter or checking that you have supplied every repeated letter.</p></div>
+  <p class="sr-status" data-status role="status" aria-live="polite"></p>
+</section>
+
+<script>
+  import { groupByLength, sanitiseLetters, solveWords, type SortMode, type WordFilters, type WordResult } from '../lib/word-solver';
+  import { loadWordBuckets } from '../lib/word-data';
+
+  const root = document.querySelector<HTMLElement>('[data-word-unscrambler]');
+  if (root) {
+    const app = root;
+    const form = app.querySelector<HTMLFormElement>('[data-form]')!;
+    const lettersInput = form.elements.namedItem('letters') as HTMLInputElement;
+    const lengthMode = form.elements.namedItem('lengthMode') as HTMLSelectElement;
+    const results = app.querySelector<HTMLElement>('[data-results]')!;
+    const resultList = app.querySelector<HTMLElement>('[data-result-list]')!;
+    const empty = app.querySelector<HTMLElement>('[data-empty]')!;
+    const loading = app.querySelector<HTMLElement>('[data-loading]')!;
+    const error = app.querySelector<HTMLElement>('[data-error]')!;
+    const status = app.querySelector<HTMLElement>('[data-status]')!;
+    const base = app.dataset.base ?? '/';
+    let latest: WordResult[] = [];
+
+    function field(name: string) { return form.elements.namedItem(name) as HTMLInputElement; }
+    function updateLengthFields() {
+      app.querySelector<HTMLElement>('[data-exact-field]')!.hidden = lengthMode.value !== 'exact';
+      app.querySelector<HTMLElement>('[data-min-field]')!.hidden = !['minimum','range'].includes(lengthMode.value);
+      app.querySelector<HTMLElement>('[data-max-field]')!.hidden = !['maximum','range'].includes(lengthMode.value);
+    }
+    lengthMode.addEventListener('change', updateLengthFields); updateLengthFields();
+
+    function filters(): WordFilters {
+      const value: WordFilters = { startsWith: field('startsWith').value, endsWith: field('endsWith').value, contains: field('contains').value };
+      if (lengthMode.value === 'exact') value.exactLength = field('exactLength').valueAsNumber;
+      if (['minimum','range'].includes(lengthMode.value)) value.minLength = field('minLength').valueAsNumber;
+      if (['maximum','range'].includes(lengthMode.value)) value.maxLength = field('maxLength').valueAsNumber;
+      return value;
+    }
+
+    function wordButton(item: WordResult) {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'word';
+      button.innerHTML = `<span>${item.word}</span><small>${item.score} pts</small>`;
+      button.setAttribute('aria-label', `Copy ${item.word}, tile score ${item.score}`);
+      button.addEventListener('click', async () => { await navigator.clipboard.writeText(item.word); button.classList.add('copied'); button.querySelector('small')!.textContent='Copied'; setTimeout(()=>{button.classList.remove('copied');button.querySelector('small')!.textContent=`${item.score} pts`;},1200); });
+      return button;
+    }
+
+    function render(items: WordResult[], grouped: boolean, sort: SortMode) {
+      resultList.replaceChildren();
+      if (!grouped) { const grid=document.createElement('div');grid.className='word-grid';items.forEach(item=>grid.append(wordButton(item)));resultList.append(grid);return; }
+      const groups=groupByLength(items); const lengths=[...groups.keys()].sort((a,b)=>sort==='shortest'?a-b:b-a);
+      for (const length of lengths) { const section=document.createElement('section');section.className='length-group';section.innerHTML=`<h4>${length}-letter words <span>${groups.get(length)!.length}</span></h4>`;const grid=document.createElement('div');grid.className='word-grid';groups.get(length)!.forEach(item=>grid.append(wordButton(item)));section.append(grid);resultList.append(section); }
+    }
+
+    function updateUrl(letters: string) {
+      const url=new URL(window.location.href); const data=new FormData(form); url.search=''; url.searchParams.set('letters',letters.toUpperCase());
+      for(const [key,value] of data){if(key!=='letters'&&value&&value!=='any'&&value!=='longest'&&key!=='grouped')url.searchParams.set(key,String(value));}
+      url.searchParams.set('grouped',field('grouped').checked?'1':'0'); history.replaceState(null,'',url);
+    }
+
+    async function search() {
+      const letters=sanitiseLetters(lettersInput.value); error.textContent=''; results.hidden=true;empty.hidden=true;
+      if(letters.length<2){error.textContent='Enter at least two letters.';lettersInput.focus();return;}
+      if(lengthMode.value==='range'&&field('minLength').valueAsNumber>field('maxLength').valueAsNumber){error.textContent='The minimum length cannot be greater than the maximum.';return;}
+      loading.hidden=false;
+      try { const dictionary=await loadWordBuckets(letters,base); const sort=(form.elements.namedItem('sort') as HTMLSelectElement).value as SortMode; const solved=solveWords(dictionary,letters,{filters:filters(),sort});latest=solved.results;updateUrl(letters);loading.hidden=true;
+        if(!solved.total){empty.hidden=false;status.textContent='No matching words found.';return;}
+        app.querySelector<HTMLElement>('[data-count]')!.textContent=String(solved.total);app.querySelector<HTMLElement>('[data-summary]')!.textContent=`Made from ${letters.toUpperCase()}`;render(solved.results,field('grouped').checked,sort);results.hidden=false;status.textContent=`${solved.total} words found.`;results.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      } catch { loading.hidden=true;error.textContent='The word list could not be loaded. Please try again.'; }
+    }
+    form.addEventListener('submit',(event)=>{event.preventDefault();void search();});
+    app.querySelector('[data-reset]')!.addEventListener('click',()=>{form.reset();updateLengthFields();latest=[];results.hidden=true;empty.hidden=true;error.textContent='';history.replaceState(null,'',window.location.pathname);lettersInput.focus();});
+    app.querySelector('[data-copy-all]')!.addEventListener('click',async()=>{await navigator.clipboard.writeText(latest.map(item=>item.word).join('\n'));status.textContent=`Copied ${latest.length} words.`;});
+    app.querySelector('[data-share]')!.addEventListener('click',async()=>{await navigator.clipboard.writeText(window.location.href);status.textContent='Search link copied.';});
+
+    const params=new URLSearchParams(window.location.search); const initial=params.get('letters');
+    if(initial){lettersInput.value=initial;for(const name of ['lengthMode','minLength','maxLength','exactLength','startsWith','endsWith','contains','sort']){const value=params.get(name);if(value)(form.elements.namedItem(name) as HTMLInputElement).value=value;}field('grouped').checked=params.get('grouped')!=='0';updateLengthFields();void search();}
+  }
+</script>
+
+<style>
+  .solver{padding:clamp(1.25rem,4vw,2.5rem);border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;box-shadow:var(--shadow)}.solver-head,.results-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.solver h2{margin:0;font-size:clamp(1.75rem,4vw,2.6rem);line-height:1.05;letter-spacing:-.04em}.solver-head p:not(.eyebrow),.results-head p{margin:.5rem 0 0;color:var(--muted)}button,input,select{font:inherit}.reset,.result-actions button{padding:.55rem .8rem;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--navy-2);font-weight:750}.main-label{display:block;margin:2rem 0 .5rem;font-weight:800}.search-row{display:grid;grid-template-columns:1fr auto;gap:.65rem}.search-row input{min-width:0;padding:1rem 1.1rem;border:2px solid #b7cac4;border-radius:var(--radius);font-size:clamp(1.2rem,4vw,1.6rem);font-weight:800;letter-spacing:.1em;text-transform:uppercase}.search-row button{padding:0 1.5rem;border:0;border-radius:var(--radius);background:var(--navy);color:#fff;font-weight:800}.help,.error{margin:.5rem 0 0;font-size:.86rem}.help{color:var(--muted)}.error{min-height:1.4em;color:#a32d2d;font-weight:700}.filters{margin-top:1.25rem;border-top:1px solid var(--border)}summary{padding:1rem 0;cursor:pointer;color:var(--navy-2);font-weight:800}.filter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:0 0 1rem}.filter-grid label{display:flex;flex-direction:column;gap:.35rem;color:var(--navy-2);font-size:.85rem;font-weight:750}.filter-grid input,.filter-grid select{min-height:2.8rem;padding:.55rem .65rem;border:1px solid #b7cac4;border-radius:.65rem;background:#fff}.filter-grid .check{flex-direction:row;align-items:center;align-self:end;min-height:2.8rem}.check input{min-height:auto;width:1.1rem;height:1.1rem}.loading,.empty{margin-top:2rem;padding:1.25rem;border-radius:var(--radius);background:var(--mint-soft);color:var(--navy-2)}.loading{display:flex;align-items:center;gap:.75rem}.loading span{width:1rem;aspect-ratio:1;border:2px solid var(--mint-dark);border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}.results{scroll-margin-top:1rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}.results h3{margin:0;font-size:1.75rem}.result-actions{display:flex;flex-wrap:wrap;gap:.5rem}.length-group{margin-top:2rem}.length-group h4{display:flex;align-items:center;justify-content:space-between;margin:0 0 .75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);font-size:1rem}.length-group h4 span{color:var(--muted);font-size:.8rem}.word-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem}.word{display:flex;min-width:0;align-items:center;justify-content:space-between;gap:.5rem;padding:.75rem;border:1px solid var(--border);border-radius:.7rem;background:#fff;text-align:left}.word:hover{border-color:var(--mint);background:#f6fffb}.word span{overflow:hidden;font-weight:800;text-overflow:ellipsis}.word small{flex:none;color:var(--muted)}.word.copied{background:var(--mint-soft)}.empty p{margin:.25rem 0 0}.sr-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}[hidden]{display:none!important}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:46rem){.filter-grid{grid-template-columns:repeat(2,1fr)}.word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:34rem){.search-row{grid-template-columns:1fr}.search-row button{min-height:3.25rem}.filter-grid{grid-template-columns:1fr}.solver-head,.results-head{display:block}.reset,.result-actions{margin-top:1rem}.word-grid{grid-template-columns:1fr}}
+</style>
