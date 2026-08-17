@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import SavingsCalculator from '../components/SavingsCalculator.astro';
+---
+<ToolLayout title="Savings Calculator" description="Project future savings from a starting balance, monthly contribution, interest rate and time period." category="Calculators" intro="Estimate how regular contributions and compound growth can build a savings balance over time." path="/savings-calculator">
+  <SavingsCalculator slot="tool" />
+  <section><h2>What the projection includes</h2><p>The estimate combines your starting balance, monthly contributions and monthly compound growth. Contributions are assumed to be made at the end of each month.</p></section>
+  <section><h2>Interest assumptions</h2><p>The annual rate is divided into monthly periods for this estimate. Real accounts can compound on a different schedule and may have variable rates, fees, taxes or contribution limits.</p></section>
+  <section><h2>Compare scenarios</h2><p>Try changing one input at a time. A longer period often has a large effect because earlier interest can earn further interest, while higher monthly contributions increase the amount you control directly.</p></section>
+  <section><h2>Planning, not a promise</h2><p>The result is a mathematical projection, not a guaranteed return or financial recommendation. Confirm product terms and consider qualified advice before making an important financial decision.</p></section>
+</ToolLayout>

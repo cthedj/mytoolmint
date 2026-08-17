@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import BudgetCalculator from '../components/BudgetCalculator.astro';
+---
+<ToolLayout title="Budget Calculator" description="Build a simple monthly budget and compare income with common expense categories." category="Calculators" intro="Add monthly income and expenses to see your remaining balance and potential savings rate." path="/budget-calculator">
+  <BudgetCalculator slot="tool" />
+  <section><h2>A simple monthly view</h2><p>Enter take-home income and the amounts spent across common monthly categories. The result shows total outgoings, what remains and the remaining amount as a percentage of income.</p></section>
+  <section><h2>What belongs in each group?</h2><p>Essentials can include housing, utilities, transport, insurance and basic food. Flexible spending covers costs you can more easily adjust. Planned savings includes transfers to goals or emergency reserves.</p></section>
+  <section><h2>When the balance is negative</h2><p>A shortfall means the entered outgoings exceed income. Review large flexible items first, then recurring commitments. A calculator can reveal the gap but cannot decide which trade-offs fit your circumstances.</p></section>
+  <section><h2>Privacy and limitations</h2><p>Values are calculated in your browser and are not saved by MyToolMint. This is a planning aid, not financial advice; irregular income, debt interest, annual bills and taxes may need a more detailed budget.</p></section>
+</ToolLayout>

@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import UnitConverter from '../components/UnitConverter.astro';
+---
+<ToolLayout title="Weight Converter" description="Convert kilograms, grams, milligrams, pounds, ounces and stone." category="Converters" intro="Move quickly between metric mass units and everyday pound, ounce and stone measurements." path="/weight-converter">
+  <UnitConverter slot="tool" kind="weight" />
+  <section><h2>Supported units</h2><p>Convert kilograms, grams and milligrams, as well as avoirdupois pounds, ounces and stone. In everyday language these are called weight units, although kilograms technically measure mass.</p></section>
+  <section><h2>Useful equivalents</h2><ul><li>1 kilogram = 1,000 grams</li><li>1 pound = 16 ounces</li><li>1 stone = 14 pounds</li><li>1 pound = 0.45359237 kilograms</li></ul></section>
+  <section><h2>Which ounce?</h2><p>This tool uses the common avoirdupois ounce for body weight, parcels and food. It does not use the troy ounce applied to precious metals or fluid ounces, which measure volume.</p></section>
+  <section><h2>Rounding</h2><p>Converted values are shown with up to eight decimal places. A conversion cannot make an original measurement more accurate, so round the result appropriately for your scale or task.</p></section>
+</ToolLayout>

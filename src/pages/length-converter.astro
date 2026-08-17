@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import UnitConverter from '../components/UnitConverter.astro';
+---
+<ToolLayout title="Length Converter" description="Convert metres, kilometres, centimetres, millimetres, miles, yards, feet and inches." category="Converters" intro="Convert common metric and imperial length units instantly, with enough precision for everyday use." path="/length-converter">
+  <UnitConverter slot="tool" kind="length" />
+  <section><h2>Supported length units</h2><p>Convert between metres, kilometres, centimetres, millimetres, miles, yards, feet and inches. Use the swap control to reverse the direction without re-entering the value.</p></section>
+  <section><h2>Common reference points</h2><ul><li>1 kilometre = 1,000 metres</li><li>1 inch = 2.54 centimetres</li><li>1 foot = 12 inches</li><li>1 mile = 1,609.344 metres</li></ul></section>
+  <section><h2>Metric and imperial values</h2><p>Metric units scale in powers of ten. Imperial and US customary length names often overlap, and the supported inch, foot, yard and international mile definitions are exact.</p></section>
+  <section><h2>Precision</h2><p>Results display up to eight decimal places. That is more than enough for ordinary conversions, but engineering, surveying and manufacturing work should preserve the precision required by its source measurement.</p></section>
+</ToolLayout>

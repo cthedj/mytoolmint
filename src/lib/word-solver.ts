@@ -68,6 +68,20 @@ export function canBuildWord(word: string, available: Uint8Array): boolean {
   return true;
 }
 
+export function canBuildWordWithWildcards(word: string, letters: string): boolean {
+  const clean = letters.toLowerCase().replace(/[^a-z?]/g, '');
+  const available = letterCounts(clean.replaceAll('?', ''));
+  let wildcards = [...clean].filter((letter) => letter === '?').length;
+  const used = new Uint8Array(26);
+  for (const letter of word.toLowerCase()) {
+    const index = letter.charCodeAt(0) - 97;
+    if (index < 0 || index >= 26) return false;
+    used[index] += 1;
+    if (used[index] > available[index]) { if (!wildcards) return false; wildcards -= 1; }
+  }
+  return true;
+}
+
 function normaliseLength(value: number | undefined): number | undefined {
   if (value === undefined || !Number.isFinite(value)) return undefined;
   return Math.max(MIN_WORD_LENGTH, Math.min(MAX_WORD_LENGTH, Math.trunc(value)));

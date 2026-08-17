@@ -8,18 +8,23 @@ MyToolMint uses Astro, strict TypeScript and static output. Public content is re
 
 - Static HTML provides a strong SEO and performance baseline.
 - Astro ships no client JavaScript unless a component requires it.
-- The Word Unscrambler can operate entirely from a local, preprocessed dataset.
-- Cloudflare Pages can host the output on its free tier.
+- Word tools operate entirely from a local, preprocessed dataset.
+- Counters, calculators and converters execute locally without server round trips.
+- GitHub Pages can host the review build at no cost; Cloudflare Pages is the preferred free custom-domain production option.
 - A backend can be introduced for a future tool only when justified by an actual requirement.
 
 ## URL indexing policy
 
-Search state may be stored in query parameters for sharing and restoration. Query combinations are not separate indexable pages. The canonical URL for all searches remains `/word-unscrambler`.
+Word Unscrambler search state is stored after the URL fragment marker (`#`) for sharing and restoration. Fragments are not sent to the host or treated as separate crawlable pages. The canonical URL remains the clean tool path, and search states are omitted from the sitemap.
 
 ## Tool-page layout rule
 
-Every utility page leads with the working tool itself immediately below the global navigation. The tool contains the page's concise H1 and essential instructions. Large editorial hero headings, breadcrumbs or promotional sections must not push the utility below the first viewport. Supporting explanations, examples, FAQs and SEO content follow the functional tool.
+Every utility page uses the reusable ToolLayout with breadcrumbs, a concise H1, essential instructions, the interactive tool and original supporting content. The interface remains prominent on mobile and desktop. Supporting explanations, examples, limitations and FAQs follow the functional tool.
 
 ## Root URL and navigation
 
-The root URL redirects to `/word-unscrambler`; it is not an indexable marketing homepage. The tool URL is the canonical organic-search destination. Primary navigation is reserved for available tools and the tools directory, while company and legal links live in the footer. Future tools should be added to the primary navigation only when they are usable.
+The root URL is an indexable MyToolMint brand homepage that links to every launch tool and makes the broader utility positioning clear. Each tool has one clean canonical URL. Primary navigation highlights the flagship tool and complete directory; company and legal links live in the footer.
+
+## Deployment and indexing
+
+The GitHub Pages deployment is a review environment and emits `noindex, nofollow` meta directives. Production canonicals always point to `https://mytoolmint.com`. The noindex directive is removed automatically when the same build is served with the production site URL. Query-string tool states canonicalise to the clean path and are not added to the sitemap.

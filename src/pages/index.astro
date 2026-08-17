@@ -1,24 +1,29 @@
 ---
-const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
-const destination = `${base}word-unscrambler`;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { toolCategories, tools } from '../lib/tools';
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
+const url=(value:string)=>`${base}${value.replace(/^\//,'')}`;
+const schema=[
+  {'@context':'https://schema.org','@type':'WebSite',name:'MyToolMint',url:'https://mytoolmint.com/',description:'Simple, fast online tools for everyday problems.'},
+  {'@context':'https://schema.org','@type':'Organization',name:'MyToolMint',url:'https://mytoolmint.com/',logo:'https://mytoolmint.com/favicon.svg'},
+];
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Open the free MyToolMint Word Unscrambler." />
-    <meta name="robots" content="noindex, follow" />
-    <meta http-equiv="refresh" content={`0;url=${destination}`} />
-    <link rel="canonical" href="https://mytoolmint.com/word-unscrambler" />
-    <title>Opening Word Unscrambler — MyToolMint</title>
-    <script is:inline define:vars={{ destination }}>window.location.replace(destination);</script>
-  </head>
-  <body>
-    <main>
-      <h1>Opening the Word Unscrambler…</h1>
-      <p>If you are not redirected, <a href={destination}>open the free Word Unscrambler</a>.</p>
-    </main>
-  </body>
-</html>
-<style>body{display:grid;min-height:100vh;margin:0;place-items:center;padding:1rem;background:#fbfaf6;color:#081a22;font-family:Inter,ui-sans-serif,system-ui,sans-serif;text-align:center}h1{margin:0;font-size:clamp(1.75rem,5vw,3rem)}p{color:#536b74}a{color:#0b755d;font-weight:750}</style>
+<BaseLayout title="MyToolMint — Simple tools for everyday problems" description="Fast, free word tools, calculators and converters built to solve everyday problems without sign-ups or clutter." canonicalPath="/" schema={schema}>
+  <section class="hero container">
+    <div class="hero-copy"><p class="eyebrow">The useful side of the internet</p><h1>Small tools.<br/><span>Big time-savers.</span></h1><p class="lead">Free word tools, calculators and converters that get to the answer quickly—no account, no app and no clutter.</p><div class="actions"><a class="button button-primary" href={url('/tools')}>Explore all 14 tools <span aria-hidden="true">→</span></a><a class="button button-secondary" href={url('/word-unscrambler')}>Unscramble letters</a></div></div>
+    <a class="feature" href={url('/word-unscrambler')} aria-label="Open the Word Unscrambler"><div class="feature-top"><span>Flagship tool</span><span class="live"><i></i> Ready</span></div><div class="tiles" aria-hidden="true"><b>M</b><b>I</b><b>N</b><b>T</b></div><h2>Word Unscrambler</h2><p>Turn mixed-up letters into valid words with length filters, patterns, scoring and shareable searches.</p><strong>Open the tool <span aria-hidden="true">↗</span></strong></a>
+  </section>
+
+  <section class="catalog container" aria-labelledby="catalog-title">
+    <div class="section-head"><div><p class="eyebrow">One tidy toolbox</p><h2 id="catalog-title">Fourteen tools, ready to use.</h2></div><a href={url('/tools')}>View the full directory →</a></div>
+    <div class="category-grid">{toolCategories.map((category)=>{
+      const categoryTools=tools.filter((tool)=>tool.category===category);
+      return <article class="category"><p class="category-count">{categoryTools.length} tools</p><h3>{category}</h3><ul>{categoryTools.map((tool)=><li><a href={url(`/${tool.path}`)}><span class="tool-icon" aria-hidden="true">{tool.icon}</span><span><strong>{tool.name}</strong><small>{tool.description}</small></span><b aria-hidden="true">→</b></a></li>)}</ul></article>;
+    })}</div>
+  </section>
+
+  <section class="promise"><div class="container promise-inner"><div><p class="eyebrow">Built with restraint</p><h2>Useful by design.</h2></div><div class="principles"><article><span>01</span><h3>Fast</h3><p>Lightweight pages and browser-based calculations keep answers close to instant.</p></article><article><span>02</span><h3>Private</h3><p>No accounts, application database, analytics or advertising in this launch version.</p></article><article><span>03</span><h3>Clear</h3><p>Readable interfaces, transparent assumptions and content that explains the answer.</p></article></div></div></section>
+</BaseLayout>
+<style>
+.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(20rem,.72fr);align-items:center;gap:clamp(2rem,7vw,7rem);min-height:calc(100vh - 6rem);padding-block:clamp(4rem,9vw,8rem)}.hero h1{max-width:10ch;margin:0;font-size:clamp(3.5rem,9vw,7.3rem);line-height:.86;letter-spacing:-.075em}.hero h1 span{color:var(--mint-dark)}.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}.feature{position:relative;overflow:hidden;padding:clamp(1.4rem,4vw,2.25rem);border:1px solid rgb(255 255 255/.16);border-radius:2rem;background:var(--navy);box-shadow:0 28px 70px rgb(8 26 34/.2);color:#fff;text-decoration:none;transform:rotate(1.5deg);transition:transform .2s ease}.feature::after{position:absolute;right:-5rem;bottom:-7rem;width:15rem;height:15rem;border-radius:50%;background:var(--mint);content:'';opacity:.18}.feature:hover{transform:rotate(0) translateY(-4px)}.feature-top{display:flex;justify-content:space-between;color:#bad0d6;font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.live{display:flex;align-items:center;gap:.4rem}.live i{width:.45rem;height:.45rem;border-radius:50%;background:#47e1ad;box-shadow:0 0 0 .25rem rgb(71 225 173/.14)}.tiles{display:flex;gap:.45rem;margin:clamp(2.5rem,7vw,4.75rem) 0 2rem}.tiles b{display:grid;width:clamp(2.65rem,6vw,4rem);aspect-ratio:1;place-items:center;border-radius:.7rem;background:var(--cream);box-shadow:0 .3rem 0 #bcd9cf;color:var(--navy);font-size:clamp(1.25rem,3vw,2rem)}.feature h2{margin:0;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.04em}.feature p{max-width:31rem;color:#bad0d6}.feature>strong{display:inline-block;margin-top:1rem;color:#7ae8c5}.catalog{padding-block:clamp(5rem,10vw,9rem)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:2rem}.section-head h2,.promise h2{max-width:12ch;margin:0;font-size:clamp(2.4rem,6vw,4.5rem);line-height:1;letter-spacing:-.055em}.section-head>a{color:var(--mint-dark);font-weight:800}.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.category{padding:1.25rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:rgb(255 255 255/.7)}.category-count{margin:0;color:var(--mint-dark);font-size:.72rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}.category h3{margin:.2rem 0 1rem;font-size:1.5rem;letter-spacing:-.03em}.category ul{display:grid;gap:.35rem;margin:0;padding:0;list-style:none}.category a{display:grid;grid-template-columns:2.4rem 1fr auto;align-items:center;gap:.75rem;padding:.7rem;border-radius:.8rem;text-decoration:none}.category a:hover{background:var(--mint-soft)}.tool-icon{display:grid;width:2.4rem;aspect-ratio:1;place-items:center;border:1px solid var(--border);border-radius:.65rem;background:#fff;color:var(--mint-dark);font-size:.8rem;font-weight:900}.category strong,.category small{display:block}.category strong{line-height:1.25}.category small{margin-top:.15rem;color:var(--muted);font-size:.76rem;line-height:1.35}.category a>b{color:var(--mint-dark)}.promise{padding-block:clamp(5rem,10vw,9rem);background:var(--navy);color:#fff}.promise .eyebrow{color:#7ae8c5}.promise-inner{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(2rem,8vw,8rem)}.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.principles article{padding-top:1rem;border-top:1px solid rgb(255 255 255/.2)}.principles span{color:#7ae8c5;font-size:.72rem;font-weight:900}.principles h3{margin:1.25rem 0 .25rem;font-size:1.3rem}.principles p{margin:0;color:#bad0d6;font-size:.9rem}@media(max-width:54rem){.hero{grid-template-columns:1fr;min-height:auto}.feature{max-width:36rem}.category-grid{grid-template-columns:1fr 1fr}.category:last-child{grid-column:1/-1}.promise-inner{grid-template-columns:1fr}}@media(max-width:38rem){.hero h1{font-size:clamp(3.25rem,16vw,5.2rem)}.category-grid,.principles{grid-template-columns:1fr}.category:last-child{grid-column:auto}.section-head{align-items:flex-start;flex-direction:column}.feature{transform:none}}
+</style>

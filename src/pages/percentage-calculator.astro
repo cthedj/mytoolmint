@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import PercentageCalculator from '../components/PercentageCalculator.astro';
+---
+<ToolLayout title="Percentage Calculator" description="Calculate a percentage of a number, what percent one number is of another, or percentage change." category="Calculators" intro="Answer the three percentage questions people use most, without remembering a formula." path="/percentage-calculator">
+  <PercentageCalculator slot="tool" />
+  <section><h2>Three useful calculations</h2><ul><li><strong>Percentage of:</strong> 15% of 240 is 36.</li><li><strong>What percent:</strong> 30 is 12.5% of 240.</li><li><strong>Percentage change:</strong> 80 to 100 is a 25% increase.</li></ul></section>
+  <section><h2>The formulas</h2><p>To find a percentage of a value, multiply the value by the percentage divided by 100. To find a ratio as a percentage, divide the part by the whole and multiply by 100.</p></section>
+  <section><h2>Percentage change</h2><p>Change is calculated as <strong>(new − original) ÷ original × 100</strong>. A positive answer is an increase and a negative answer is a decrease. Change from zero is undefined.</p></section>
+  <section><h2>Rounding</h2><p>The calculator keeps useful decimal precision while avoiding long floating-point tails. For accounting, tax or regulated decisions, apply the rounding rules required by the relevant authority.</p></section>
+</ToolLayout>
