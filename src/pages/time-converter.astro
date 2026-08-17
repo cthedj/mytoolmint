@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import UnitConverter from '../components/UnitConverter.astro';
+---
+<ToolLayout title="Time Converter" description="Convert duration values between seconds, minutes, hours, days and weeks." category="Converters" intro="Convert common duration units for schedules, timesheets, study plans and everyday calculations." path="/time-converter">
+  <UnitConverter slot="tool" kind="time" />
+  <section><h2>Supported durations</h2><p>Convert seconds, minutes, hours, days and seven-day weeks. This is a duration converter, so it does not translate clock times between time zones.</p></section>
+  <section><h2>Common equivalents</h2><ul><li>1 minute = 60 seconds</li><li>1 hour = 60 minutes</li><li>1 day = 24 hours</li><li>1 week = 7 days</li></ul></section>
+  <section><h2>Calendar time is different</h2><p>Months and years are intentionally excluded because their duration varies. Calendar calculations should use actual dates, month lengths and leap-year rules rather than a single fixed conversion factor.</p></section>
+  <section><h2>Decimal time</h2><p>A decimal hour is a fraction of 60 minutes: 1.5 hours equals 90 minutes. This is useful when converting time records, but payroll systems may apply their own rounding increments.</p></section>
+</ToolLayout>

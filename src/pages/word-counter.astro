@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import WordCounter from '../components/WordCounter.astro';
+---
+<ToolLayout title="Word Counter" description="Count words, characters, sentences, paragraphs and estimated reading time directly in your browser." category="Word tools" intro="Paste or type text to get useful writing statistics instantly. Your text stays in your browser." path="/word-counter">
+  <WordCounter slot="tool" />
+  <section><h2>What the counter measures</h2><p>The tool reports words, characters with and without spaces, sentences, paragraphs, estimated reading time and the most frequent meaningful words. Counts update as you type.</p></section>
+  <section><h2>How words are counted</h2><p>Sequences of letters or numbers are treated as words, including words with an internal apostrophe or hyphen. Results can differ from a word processor because counting rules are not universal.</p></section>
+  <section><h2>Reading-time estimate</h2><p>Reading time uses a simple pace of about 200 words per minute. Technical material, unfamiliar vocabulary and reading aloud can take longer, so treat the number as a practical estimate.</p></section>
+  <section><h2>Privacy by design</h2><p>The counter runs locally in your browser. MyToolMint does not send the text to an application server or store it in a database. Avoid pasting sensitive text into any browser or device you do not trust.</p></section>
+</ToolLayout>

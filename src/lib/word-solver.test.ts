@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { canBuildWord, groupByLength, letterCounts, sanitiseLetters, solveWords, tileScore } from './word-solver';
+import { canBuildWord, canBuildWordWithWildcards, groupByLength, letterCounts, sanitiseLetters, solveWords, tileScore } from './word-solver';
 
 const words = ['a', 'art', 'arts', 'aster', 'ear', 'east', 'eats', 'rate', 'rates', 'seat', 'stare', 'state', 'taste', 'teas', 'treat', 'treats', 'zzz'];
 
@@ -13,6 +13,7 @@ describe('letter accounting', () => {
     expect(canBuildWord('state', letterCounts('state'))).toBe(true);
     expect(canBuildWord('state', letterCounts('stare'))).toBe(false);
   });
+  it('uses question marks as single-letter wildcards', () => { expect(canBuildWordWithWildcards('state', 'sta??')).toBe(true); expect(canBuildWordWithWildcards('state', 'sta?')).toBe(false); });
 });
 
 describe('solver', () => {

@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import UnitConverter from '../components/UnitConverter.astro';
+---
+<ToolLayout title="Temperature Converter" description="Convert temperatures between Celsius, Fahrenheit and Kelvin." category="Converters" intro="Translate Celsius, Fahrenheit and Kelvin values with an instant, reversible conversion." path="/temperature-converter">
+  <UnitConverter slot="tool" kind="temperature" />
+  <section><h2>Temperature formulas</h2><p>Fahrenheit from Celsius is <strong>(C × 9/5) + 32</strong>. Celsius from Fahrenheit is <strong>(F − 32) × 5/9</strong>. Kelvin equals Celsius plus 273.15.</p></section>
+  <section><h2>Everyday reference points</h2><ul><li>Water freezes at 0 °C or 32 °F</li><li>Water boils near 100 °C or 212 °F at standard pressure</li><li>0 K is absolute zero</li></ul></section>
+  <section><h2>Celsius and Kelvin increments</h2><p>A change of one degree Celsius is the same size as a change of one kelvin; only their zero points differ. Kelvin values are written without a degree symbol.</p></section>
+  <section><h2>Real-world conditions</h2><p>Boiling points vary with pressure and altitude, and measured temperatures carry instrument uncertainty. Use calibrated equipment and the required standard for scientific or safety-critical work.</p></section>
+</ToolLayout>

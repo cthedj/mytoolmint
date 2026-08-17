@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import WordFinder from '../components/WordFinder.astro';
+---
+<ToolLayout title="Word Finder" description="Find words from a letter rack, including blank tiles and optional position patterns." category="Word tools" intro="Search your available letters, use up to two blanks, and narrow results with a simple position pattern." path="/word-finder">
+  <WordFinder slot="tool" />
+  <section><h2>Letters, blanks and patterns</h2><p>Enter the letters you have and use <strong>?</strong> for a blank. A separate pattern can fix known positions: <strong>S??RE</strong> means a five-letter word beginning with S and ending in RE.</p></section>
+  <section><h2>How results are ranked</h2><p>Longer words appear first, followed by higher tile values and alphabetical order. The small point total is a generic English tile score for comparing results; tap a result to copy it.</p></section>
+  <section><h2>How blanks work</h2><p>Each question mark can stand for one missing letter. MyToolMint supports up to two blanks and still enforces the number of ordinary letters in your rack, including duplicates.</p></section>
+  <section><h2>Word-game use</h2><p>This finder is useful for practising anagrams, checking possible rack combinations and exploring spelling. It is not an official adjudicator, and different games and competitions use different dictionaries.</p></section>
+</ToolLayout>

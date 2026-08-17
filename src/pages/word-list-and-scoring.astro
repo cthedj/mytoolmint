@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegalPage from '../components/LegalPage.astro';
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 ---
 <BaseLayout title="Word List and Scoring — MyToolMint" description="Learn where MyToolMint's English words come from, what the list includes and how tile scores work.">
   <LegalPage eyebrow="Methodology" title="Word list and scoring" intro="A transparent guide to the data behind the MyToolMint Word Unscrambler.">
@@ -9,6 +10,6 @@ import LegalPage from '../components/LegalPage.astro';
     <section><h2>Coverage and limitations</h2><p>This is a broad spelling-oriented English list, not an official dictionary for any word game. It may include uncommon, regional or inflected forms and may omit words found in specialist or newer dictionaries. Proper names, punctuation and one-letter entries are excluded.</p></section>
     <section><h2>Licence and attribution</h2><p>Copyright 2000–2026 Kevin Atkinson. SCOWL permits use, copying, modification, distribution and sale provided its copyright and permission notices appear in copies and supporting documentation. MyToolMint preserves the complete notice in <a href="https://github.com/cthedj/mytoolmint/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a>.</p></section>
     <section><h2>Tile scoring</h2><p>Scores use a familiar generic set of English letter-tile values to help compare words. They do not include board bonuses, blank-tile rules or game-specific scoring changes. MyToolMint is not affiliated with or endorsed by any word-game publisher.</p></section>
-    <section><h2>Report a word</h2><p>If a result looks wrong or a useful word appears to be missing, include the word and a reputable dictionary reference in a <a href="./contact">feedback report</a>.</p></section>
+    <section><h2>Report a word</h2><p>If a result looks wrong or a useful word appears to be missing, include the word and a reputable dictionary reference in a <a href={`${base}contact`}>feedback report</a>.</p></section>
   </LegalPage>
 </BaseLayout>

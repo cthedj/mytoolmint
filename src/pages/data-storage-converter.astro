@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import UnitConverter from '../components/UnitConverter.astro';
+---
+<ToolLayout title="Data Storage Converter" description="Convert bytes, decimal kilobytes through terabytes, and binary kibibytes through tebibytes." category="Converters" intro="See the difference between decimal storage units such as GB and binary units such as GiB." path="/data-storage-converter">
+  <UnitConverter slot="tool" kind="data" />
+  <section><h2>Decimal storage units</h2><p>Kilobytes (kB), megabytes (MB), gigabytes (GB) and terabytes (TB) use powers of 1,000. For example, one GB is 1,000,000,000 bytes.</p></section>
+  <section><h2>Binary storage units</h2><p>Kibibytes (KiB), mebibytes (MiB), gibibytes (GiB) and tebibytes (TiB) use powers of 1,024. One GiB is 1,073,741,824 bytes.</p></section>
+  <section><h2>Why drive sizes can look smaller</h2><p>Storage manufacturers commonly label capacity with decimal units, while some operating systems display binary-sized values using decimal-looking labels. That convention difference can make the reported number appear lower.</p></section>
+  <section><h2>Bits are different from bytes</h2><p>This converter uses bytes and byte-based units. Network speeds are often quoted in bits per second; eight bits equal one byte, before protocol overhead or other real-world limits.</p></section>
+</ToolLayout>

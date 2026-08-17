@@ -1,47 +1,48 @@
-# Phase 1 roadmap
+# MyToolMint roadmap
 
 ## Current phase
 
-Launch-readiness hardening complete; production-domain connection and final live checks next.
+Phase 1 implementation complete in code. Merge, production-domain connection and live launch checks remain.
 
 ## Completed
 
-- Business, brand and domain selected
-- Architecture accepted
-- SCOWL dataset direction accepted
-- Astro and strict TypeScript project scaffolded
-- Canonical query-state indexing policy documented
-- Reusable visual design system, responsive site shell, brand mark and favicon
-- First polished homepage, tools, about and contact views
-- ESDB/SCOWL release `2026.02.25` pinned with checksums and licence notices
-- Reproducible 81,949-word dataset split into lazy-loadable initial-letter buckets
-- Tested solver engine with filters, sorting, duplicate-letter correctness and tile scoring
-- Mobile-first Word Unscrambler interface with advanced filters, grouped results, copy/share controls and URL-restored searches
-- Original supporting content covering operation, examples, filters, duplicate letters, tips, word-list limitations and FAQs
-- Accurate Privacy, Cookie, Terms and Disclaimer pages for the current no-analytics, no-ads implementation
-- Public word-list, licence and tile-scoring methodology page
-- Production canonical URLs, GitHub-preview noindex protection and appropriate WebSite/WebApplication structured data
-- Automated built-site checks for required routes, metadata, canonicals and heading structure
-- Root URL sends visitors directly to the flagship tool; the marketing landing hero and Home navigation item are removed
+- Astro, strict TypeScript and static-first architecture
+- Reusable mint, navy and neutral design system with responsive shell, brand mark and favicon
+- Purposeful homepage, complete tools directory, About and public GitHub contact route
+- 14 working launch tools: four word tools, five calculators and five converters
+- 81,949-word ESDB/SCOWL dataset, pinned source, checksums, generator and public licence notices
+- Efficient frequency-based solver, exact anagrams, blank-tile matching, filters, grouping, sorting and generic tile scores
+- Client-side counter, calculator and conversion engines with unit tests
+- Original explanatory content and limitations on every tool page
+- Privacy Policy, Cookie Policy, Terms of Use and Disclaimer aligned to the current implementation
+- Production canonicals, GitHub-review noindex protection, metadata, sitemap, robots.txt and appropriate structured data
+- Automated unit, dataset, type and built-site checks
 
 ## Immediate next actions
 
-1. Connect `mytoolmint.com` to production hosting.
-2. Run final live-domain browser, mobile and accessibility checks.
-3. Submit the production sitemap and configure Search Console.
-4. Establish a privacy-respecting analytics baseline only if measurement needs justify it.
+1. Merge the complete-platform pull request and review the GitHub Pages deployment.
+2. Connect `mytoolmint.com` to the selected production host.
+3. Run final live-domain mobile, keyboard, accessibility and link checks.
+4. Add and verify the production property in Google Search Console, then submit the sitemap.
+5. Establish a privacy-respecting analytics baseline only if measurement needs justify it.
 
-## Known issues
+## Technical and SEO decisions
 
-- Clipboard actions depend on standard browser clipboard permissions and require HTTPS in production.
-- Hosting, DNS, Search Console and analytics are not configured.
+- Keep every launch tool static and browser-based; introduce a backend only for a concrete future requirement.
+- Maintain one useful canonical page per tool and do not index arbitrary query combinations.
+- Add tools only when their functionality and supporting content are complete.
+- Keep GitHub Pages non-indexable while it serves as the review URL.
+- Defer advertising until after the custom-domain launch, meaningful content review and a separate AdSense-readiness assessment.
 
-## Future backlog
+## Known issues and external dependencies
 
-- Additional word tools
-- Calculators
-- Converters
-- Text tools
-- Money tools
-- Date and time tools
-- AdSense-readiness review after meaningful usage and content exist
+- Clipboard actions require browser permission and work best over HTTPS.
+- DNS, custom-domain hosting and Search Console require account-owner configuration outside the codebase.
+- The tools are general utilities; word-game dictionaries, tax rules and financial outcomes vary and must be independently confirmed for high-stakes use.
+
+## Future backlog after launch
+
+- Observe real searches and user feedback before selecting the next tools.
+- Candidate families: richer text tools, date/time utilities, financial calculators and additional converters.
+- Add analytics only with a clear measurement question and matching privacy updates.
+- Run an AdSense-readiness review after the site has genuine usage and a stable content footprint.

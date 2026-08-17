@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import VatCalculator from '../components/VatCalculator.astro';
+---
+<ToolLayout title="VAT Calculator" description="Add VAT to an excluding amount or remove VAT from an inclusive total using a custom rate." category="Calculators" intro="Switch between adding and removing VAT, enter the rate that applies, and see the net, tax and gross amounts." path="/vat-calculator">
+  <VatCalculator slot="tool" />
+  <section><h2>Add VAT to a price</h2><p>For an excluding price, VAT equals the net amount multiplied by the rate. The inclusive total is the net amount plus the VAT amount.</p></section>
+  <section><h2>Remove VAT correctly</h2><p>To extract VAT from a tax-inclusive amount, divide the total by <strong>1 + rate</strong> to find the net amount. Simply subtracting the percentage from the gross amount gives the wrong answer.</p></section>
+  <section><h2>Use the applicable rate</h2><p>The rate is editable because VAT rates and rules vary by place, date, product and seller. The prefilled value is only a convenience; confirm the rate and treatment that apply to your transaction.</p></section>
+  <section><h2>Rounding and records</h2><p>Displayed currency amounts are rounded to two decimal places. Invoices and tax systems may use prescribed line-level rounding, exemptions or special rules, so use official records for filing and compliance.</p></section>
+</ToolLayout>

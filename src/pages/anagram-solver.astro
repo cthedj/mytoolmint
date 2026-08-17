@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import ExactAnagramSolver from '../components/ExactAnagramSolver.astro';
+---
+<ToolLayout title="Exact Anagram Solver" description="Find exact English anagrams that use every letter you enter, with no letters left over." category="Word tools" intro="Rearrange every letter into complete words. Exact means every supplied letter is used once." path="/anagram-solver">
+  <ExactAnagramSolver slot="tool" />
+  <section><h2>What is an exact anagram?</h2><p>An exact anagram rearranges all the letters in a word or phrase without adding or dropping any. For example, LISTEN can become SILENT or ENLIST. This differs from an unscrambler, which can also return shorter words.</p></section>
+  <section><h2>How to use it</h2><ol><li>Enter two or more letters.</li><li>Select <strong>Find exact anagrams</strong>.</li><li>Tap a result to copy it.</li></ol><p>Spaces, numbers and punctuation are ignored, and letter case does not matter.</p></section>
+  <section><h2>Duplicate letters</h2><p>Repeated letters are counted precisely. If your input contains two Es, a result may use two Es—but never three. A result must also have exactly the same number of letters as the cleaned input.</p></section>
+  <section><h2>Useful limits</h2><p>Word lists differ, so a result is not a guarantee that a particular school, publication or word-game ruleset accepts it. MyToolMint uses an openly licensed general English list and does not include proper nouns.</p></section>
+</ToolLayout>

@@ -1,0 +1,11 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import AgeCalculator from '../components/AgeCalculator.astro';
+---
+<ToolLayout title="Age Calculator" description="Calculate age in calendar years, months and days between a birth date and any comparison date." category="Calculators" intro="Find an exact calendar age or the elapsed time between two dates." path="/age-calculator">
+  <AgeCalculator slot="tool" />
+  <section><h2>How calendar age works</h2><p>Age is expressed in complete years, then complete months, then remaining days. That reflects calendar boundaries rather than dividing the total days by a fixed 365-day year.</p></section>
+  <section><h2>Choose any comparison date</h2><p>The second date defaults to today, but you can change it to calculate age on a past or future date. The comparison date must not be earlier than the birth or start date.</p></section>
+  <section><h2>Leap years and month lengths</h2><p>The calculation uses real calendar dates, so February and leap years are accounted for. People born on 29 February may observe birthdays differently depending on local custom or law.</p></section>
+  <section><h2>Important uses</h2><p>This tool is useful for planning and general information. For legal eligibility, benefits, insurance or identity records, confirm the applicable rules and use the date recorded by the responsible authority.</p></section>
+</ToolLayout>
