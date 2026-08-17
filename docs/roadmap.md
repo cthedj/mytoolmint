@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Reusable design system and site shell.
+Word dataset and solver engine complete; interface integration next.
 
 ## Completed
 
@@ -13,18 +13,21 @@ Reusable design system and site shell.
 - Canonical query-state indexing policy documented
 - Reusable visual design system, responsive site shell, brand mark and favicon
 - First polished homepage, tools, about and contact views
+- ESDB/SCOWL release `2026.02.25` pinned with checksums and licence notices
+- Reproducible 81,949-word dataset split into lazy-loadable initial-letter buckets
+- Tested solver engine with filters, sorting, duplicate-letter correctness and tile scoring
 
 ## Immediate next actions
 
-1. Pin the SCOWL release and add the reproducible dataset generator.
-2. Implement and unit-test the solver engine.
-3. Build the mobile-first Word Unscrambler interface.
+1. Build the mobile-first Word Unscrambler interface.
+2. Connect lazy-loaded word buckets, shareable URL state and result interactions.
+3. Complete full browser, mobile and accessibility tests.
 4. Add supporting content and legal/trust pages.
 5. Complete technical SEO and launch QA.
 
 ## Known issues
 
-- Production word data is intentionally absent until the exact upstream release and notices are committed together.
+- The generated SCOWL dataset and solver engine are complete; integration into the browser UI is the next milestone.
 - Hosting, DNS, Search Console and analytics are not configured.
 
 ## Future backlog
