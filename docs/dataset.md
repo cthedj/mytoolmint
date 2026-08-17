@@ -20,7 +20,7 @@ Results are words in the MyToolMint English word list. MyToolMint must not descr
 
 ## Licence obligations
 
-Before the dataset is incorporated:
+The required SCOWL copyright and permission notice is preserved in `THIRD_PARTY_NOTICES.md`, and the public `/word-list-and-scoring` page explains the dataset source, coverage and limitations.
 
 The generator is `scripts/build-word-data.mjs`. It downloads or reads the two pinned source files, verifies their checksums, applies the documented filters, deduplicates and sorts the result, and writes one JSON bucket for each initial letter plus metadata. The generated word data is a build product; the pinned inputs and generator remain the source of truth.
 

@@ -19,3 +19,7 @@ Search state may be stored in query parameters for sharing and restoration. Quer
 ## Tool-page layout rule
 
 Every utility page leads with the working tool itself immediately below the global navigation. The tool contains the page's concise H1 and essential instructions. Large editorial hero headings, breadcrumbs or promotional sections must not push the utility below the first viewport. Supporting explanations, examples, FAQs and SEO content follow the functional tool.
+
+## Root URL and navigation
+
+The root URL redirects to `/word-unscrambler`; it is not an indexable marketing homepage. The tool URL is the canonical organic-search destination. Primary navigation is reserved for available tools and the tools directory, while company and legal links live in the footer. Future tools should be added to the primary navigation only when they are usable.

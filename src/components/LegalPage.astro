@@ -1,0 +1,17 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  updated?: string;
+}
+
+const { eyebrow, title, intro, updated = '17 August 2026' } = Astro.props;
+---
+<article class="container legal">
+  <header><p class="eyebrow">{eyebrow}</p><h1>{title}</h1><p class="lead">{intro}</p><p class="updated">Last updated: {updated}</p></header>
+  <div class="legal-content"><slot /></div>
+</article>
+<style>
+.legal{max-width:54rem;padding-block:clamp(3rem,8vw,7rem)}header{padding-bottom:2rem;border-bottom:1px solid var(--border)}h1{max-width:17ch;margin:.4rem 0 1rem;font-size:clamp(2.4rem,7vw,4.6rem);line-height:1;letter-spacing:-.055em}.updated{margin:1.25rem 0 0;color:var(--muted);font-size:.88rem;font-weight:700}.legal-content{padding-top:1rem}.legal-content :global(section){padding:1.75rem 0;border-bottom:1px solid var(--border)}.legal-content :global(section:last-child){border-bottom:0}.legal-content :global(h2){margin:0 0 .7rem;font-size:clamp(1.35rem,3vw,1.7rem);letter-spacing:-.025em}.legal-content :global(p),.legal-content :global(li){color:var(--muted)}.legal-content :global(a){color:var(--mint-dark);font-weight:750}.legal-content :global(ul){padding-left:1.25rem}
+</style>

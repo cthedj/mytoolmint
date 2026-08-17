@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && npm run test:site",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run --passWithNoTests",
+    "test:site": "node scripts/check-built-site.mjs",
     "test:watch": "vitest",
     "data:build": "node scripts/build-word-data.mjs"
   },
