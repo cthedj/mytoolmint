@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/LegalPage.astro';
+---
+<BaseLayout title="Privacy Policy — MyToolMint" description="How MyToolMint handles information when you use its free browser-based tools.">
+  <LegalPage eyebrow="Privacy" title="Privacy Policy" intro="This policy explains what information is—and is not—handled when you use MyToolMint in its current form.">
+    <section><h2>The short version</h2><p>MyToolMint currently has no user accounts, contact form, advertising, analytics, application database or server-side tool processing. The Word Unscrambler runs in your browser using word data delivered with the website.</p></section>
+    <section><h2>Information used by the Word Unscrambler</h2><p>The letters and filters you enter are processed locally in your browser. When search state is placed in the page URL, it may be visible in your address bar, browser history, bookmarks, copied links and ordinary hosting request logs. Avoid putting personal or confidential information into the tool or its URL.</p></section>
+    <section><h2>Website hosting</h2><p>The current public preview is hosted by GitHub Pages. Like other website hosts, GitHub may receive technical request information such as an IP address, browser details, requested URL and timestamps, and may use cookies or similar technologies for security and service operation. GitHub handles that information under its own <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">Privacy Statement</a> and <a href="https://docs.github.com/en/site-policy/privacy-policies/github-cookies">cookie information</a>.</p></section>
+    <section><h2>Contact and public GitHub issues</h2><p>If you contact MyToolMint through GitHub, your issue, username and anything you submit may be public. Do not include passwords, private contact details or other sensitive information. GitHub controls information associated with your GitHub account.</p></section>
+    <section><h2>Retention and sharing</h2><p>MyToolMint does not currently maintain an application database containing tool searches or contact submissions. Hosting and GitHub issue records are retained and shared according to GitHub's policies and your choices on GitHub.</p></section>
+    <section><h2>Children's privacy</h2><p>MyToolMint is a general-audience utility and is not designed to collect personal information from children. It does not currently offer accounts or a direct submission form.</p></section>
+    <section><h2>Changes to this policy</h2><p>This page will be updated before analytics, advertising, forms or other data-handling services are introduced. Material changes will be described here with a new “last updated” date.</p></section>
+    <section><h2>Contact</h2><p>For privacy questions or corrections, use the <a href="./contact">contact page</a>.</p></section>
+  </LegalPage>
+</BaseLayout>
