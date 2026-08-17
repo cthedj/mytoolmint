@@ -1,1 +1,36 @@
-IyBQaGFzZSAxIHJvYWRtYXAKCiMjIEN1cnJlbnQgcGhhc2UKCkZvdW5kYXRpb24gYW5kIHRlY2huaWNhbCBzZXR1cC4KCiMjIENvbXBsZXRlZAoKLSBCdXNpbmVzcywgYnJhbmQgYW5kIGRvbWFpbiBzZWxlY3RlZAotIEFyY2hpdGVjdHVyZSBhY2NlcHRlZAotIFNDT1dMIGRhdGFzZXQgZGlyZWN0aW9uIGFjY2VwdGVkCi0gQXN0cm8gYW5kIHN0cmljdCBUeXBlU2NyaXB0IHByb2plY3Qgc2NhZmZvbGRlZAotIENhbm9uaWNhbCBxdWVyeS1zdGF0ZSBpbmRleGluZyBwb2xpY3kgZG9jdW1lbnRlZAoKIyMgSW1tZWRpYXRlIG5leHQgYWN0aW9ucwoKMS4gQnVpbGQgdGhlIHJldXNhYmxlIGRlc2lnbiBzeXN0ZW0sIG5hdmlnYXRpb24sIGZvb3RlciwgbG9nbyBhbmQgZmF2aWNvbi4KMi4gUGluIHRoZSBTQ09XTCByZWxlYXNlIGFuZCBhZGQgdGhlIHJlcHJvZHVjaWJsZSBkYXRhc2V0IGdlbmVyYXRvci4KMy4gSW1wbGVtZW50IGFuZCB1bml0LXRlc3QgdGhlIHNvbHZlciBlbmdpbmUuCjQuIEJ1aWxkIHRoZSBtb2JpbGUtZmlyc3QgV29yZCBVbnNjcmFtYmxlciBpbnRlcmZhY2UuCjUuIEFkZCBjb250ZW50LCB0cnVzdCBwYWdlcywgdGVjaG5pY2FsIFNFTyBhbmQgbGF1bmNoIFFBLgoKIyMgS25vd24gaXNzdWVzCgotIFByb2R1Y3Rpb24gd29yZCBkYXRhIGlzIGludGVudGlvbmFsbHkgYWJzZW50IHVudGlsIHRoZSBleGFjdCB1cHN0cmVhbSByZWxlYXNlIGFuZCBub3RpY2VzIGFyZSBjb21taXR0ZWQgdG9nZXRoZXIuCi0gSG9zdGluZywgRE5TLCBTZWFyY2ggQ29uc29sZSBhbmQgYW5hbHl0aWNzIGFyZSBub3QgY29uZmlndXJlZC4KCiMjIEZ1dHVyZSBiYWNrbG9nCgotIEFkZGl0aW9uYWwgd29yZCB0b29scwotIENhbGN1bGF0b3JzCi0gQ29udmVydGVycwotIFRleHQgdG9vbHMKLSBNb25leSB0b29scwotIERhdGUgYW5kIHRpbWUgdG9vbHMKLSBBZFNlbnNlLXJlYWRpbmVzcyByZXZpZXcgYWZ0ZXIgbWVhbmluZ2Z1bCB1c2FnZSBhbmQgY29udGVudCBleGlzdAo=
+# Phase 1 roadmap
+
+## Current phase
+
+Foundation and technical setup.
+
+## Completed
+
+- Business, brand and domain selected
+- Architecture accepted
+- SCOWL dataset direction accepted
+- Astro and strict TypeScript project scaffolded
+- Canonical query-state indexing policy documented
+
+## Immediate next actions
+
+1. Build the reusable design system, navigation, footer, logo and favicon.
+2. Pin the SCOWL release and add the reproducible dataset generator.
+3. Implement and unit-test the solver engine.
+4. Build the mobile-first Word Unscrambler interface.
+5. Add content, trust pages, technical SEO and launch QA.
+
+## Known issues
+
+- Production word data is intentionally absent until the exact upstream release and notices are committed together.
+- Hosting, DNS, Search Console and analytics are not configured.
+
+## Future backlog
+
+- Additional word tools
+- Calculators
+- Converters
+- Text tools
+- Money tools
+- Date and time tools
+- AdSense-readiness review after meaningful usage and content exist
