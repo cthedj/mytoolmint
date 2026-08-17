@@ -1,1 +1,31 @@
-IyBNeVRvb2xNaW50CgpTaW1wbGUgdG9vbHMgZm9yIGV2ZXJ5ZGF5IHByb2JsZW1zLgoKTXlUb29sTWludCBpcyBhIGZhc3QsIGFjY2Vzc2libGUgdXRpbGl0eSB3ZWJzaXRlLiBJdHMgZmlyc3QgZmxhZ3NoaXAgcHJvZHVjdCBpcyBhIHBvbGlzaGVkIGNsaWVudC1zaWRlIFdvcmQgVW5zY3JhbWJsZXIsIGZvbGxvd2VkIGJ5IGNhcmVmdWxseSBzZWxlY3RlZCBjYWxjdWxhdG9ycywgY29udmVydGVycywgdGV4dCB0b29scyBhbmQgb3RoZXIgZXZlcnlkYXkgdXRpbGl0aWVzLgoKIyMgVGVjaG5vbG9neQoKLSBBc3RybwotIFR5cGVTY3JpcHQKLSBTdGF0aWMtZmlyc3QgZGVwbG95bWVudAotIExvY2FsLCBsaWNlbmNlLXJldmlld2VkIGRhdGFzZXRzCi0gVml0ZXN0CgojIyBMb2NhbCBkZXZlbG9wbWVudAoKYGBgc2gKbnBtIGluc3RhbGwKbnBtIHJ1biBkZXYKYGBgCgpSdW4gdmFsaWRhdGlvbiB3aXRoOgoKYGBgc2gKbnBtIHJ1biBjaGVjawpucG0gdGVzdApucG0gcnVuIGJ1aWxkCmBgYAoKVGVjaG5pY2FsIGRlY2lzaW9ucyBhbmQgdGhlIGN1cnJlbnQgcm9hZG1hcCBsaXZlIGluIFtgZG9jcy9gXShkb2NzLykuCk15VG9vbE1pbnQgLSBzaW1wbGUsIHVzZWZ1bCBvbmxpbmUgdG9vbHMgZm9yIGV2ZXJ5ZGF5IHByb2JsZW1zLgo=
+# MyToolMint
+
+Simple tools for everyday problems.
+
+MyToolMint is a fast, accessible utility website. Its first flagship product is a polished client-side Word Unscrambler, followed by carefully selected calculators, converters, text tools and other everyday utilities.
+
+## Technology
+
+- Astro
+- TypeScript
+- Static-first deployment
+- Local, licence-reviewed datasets
+- Vitest
+
+## Local development
+
+```sh
+npm install
+npm run dev
+```
+
+Run validation with:
+
+```sh
+npm run check
+npm test
+npm run build
+```
+
+Technical decisions and the current roadmap live in [`docs/`](docs/).
+MyToolMint - simple, useful online tools for everyday problems.
