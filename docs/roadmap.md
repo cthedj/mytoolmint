@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Foundation and technical setup.
+Reusable design system and site shell.
 
 ## Completed
 
@@ -11,14 +11,16 @@ Foundation and technical setup.
 - SCOWL dataset direction accepted
 - Astro and strict TypeScript project scaffolded
 - Canonical query-state indexing policy documented
+- Reusable visual design system, responsive site shell, brand mark and favicon
+- First polished homepage, tools, about and contact views
 
 ## Immediate next actions
 
-1. Build the reusable design system, navigation, footer, logo and favicon.
-2. Pin the SCOWL release and add the reproducible dataset generator.
-3. Implement and unit-test the solver engine.
-4. Build the mobile-first Word Unscrambler interface.
-5. Add content, trust pages, technical SEO and launch QA.
+1. Pin the SCOWL release and add the reproducible dataset generator.
+2. Implement and unit-test the solver engine.
+3. Build the mobile-first Word Unscrambler interface.
+4. Add supporting content and legal/trust pages.
+5. Complete technical SEO and launch QA.
 
 ## Known issues
 
