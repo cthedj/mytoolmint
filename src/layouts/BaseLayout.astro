@@ -1,1 +1,27 @@
-LS0tCmludGVyZmFjZSBQcm9wcyB7CiAgdGl0bGU6IHN0cmluZzsKICBkZXNjcmlwdGlvbjogc3RyaW5nOwogIGNhbm9uaWNhbFBhdGg/OiBzdHJpbmc7Cn0KCmNvbnN0IHsgdGl0bGUsIGRlc2NyaXB0aW9uLCBjYW5vbmljYWxQYXRoID0gQXN0cm8udXJsLnBhdGhuYW1lIH0gPSBBc3Ryby5wcm9wczsKY29uc3QgY2Fub25pY2FsVXJsID0gbmV3IFVSTChjYW5vbmljYWxQYXRoLCBBc3Ryby5zaXRlKTsKLS0tCgo8IWRvY3R5cGUgaHRtbD4KPGh0bWwgbGFuZz0iZW4iPgogIDxoZWFkPgogICAgPG1ldGEgY2hhcnNldD0iVVRGLTgiIC8+CiAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoIiAvPgogICAgPG1ldGEgbmFtZT0iZ2VuZXJhdG9yIiBjb250ZW50PXtBc3Ryby5nZW5lcmF0b3J9IC8+CiAgICA8bWV0YSBuYW1lPSJkZXNjcmlwdGlvbiIgY29udGVudD17ZGVzY3JpcHRpb259IC8+CiAgICA8bGluayByZWw9ImNhbm9uaWNhbCIgaHJlZj17Y2Fub25pY2FsVXJsfSAvPgogICAgPHRpdGxlPnt0aXRsZX08L3RpdGxlPgogIDwvaGVhZD4KICA8Ym9keT4KICAgIDxtYWluPgogICAgICA8c2xvdCAvPgogICAgPC9tYWluPgogIDwvYm9keT4KPC9odG1sPgo=
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+}
+
+const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
+const canonicalUrl = new URL(canonicalPath, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
