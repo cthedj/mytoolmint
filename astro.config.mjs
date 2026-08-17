@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://mytoolmint.com',
-  base: process.env.BASE_PATH ?? '/',
+  base: process.env.BASE_PATH || '/',
   output: 'static',
   trailingSlash: 'never',
 });
