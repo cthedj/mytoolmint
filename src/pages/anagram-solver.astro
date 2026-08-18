@@ -1,11 +1,16 @@
 ---
 import ToolLayout from '../layouts/ToolLayout.astro';
 import ExactAnagramSolver from '../components/ExactAnagramSolver.astro';
+import { pagePath } from '../lib/site-path';
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 ---
-<ToolLayout title="Exact Anagram Solver" description="Find exact English anagrams that use every letter you enter, with no letters left over." category="Word tools" intro="Rearrange every letter into complete words. Exact means every supplied letter is used once." path="/anagram-solver">
+<ToolLayout title="Anagram Solver" metaTitle="Anagram Solver — Find Exact Anagrams | MyToolMint" description="Solve anagrams by rearranging every letter into valid English words. Exact matching counts duplicate letters and leaves no letters unused." category="Word tools" intro="Rearrange every supplied letter into complete words. Every result uses all the letters once, with nothing added or left over." path="/anagram-solver">
   <ExactAnagramSolver slot="tool" />
-  <section><h2>What is an exact anagram?</h2><p>An exact anagram rearranges all the letters in a word or phrase without adding or dropping any. For example, LISTEN can become SILENT or ENLIST. This differs from an unscrambler, which can also return shorter words.</p></section>
-  <section><h2>How to use it</h2><ol><li>Enter two or more letters.</li><li>Select <strong>Find exact anagrams</strong>.</li><li>Tap a result to copy it.</li></ol><p>Spaces, numbers and punctuation are ignored, and letter case does not matter.</p></section>
+  <section><h2>What is an anagram solver?</h2><p>An anagram solver rearranges letters to find valid words. MyToolMint performs an exact search: every supplied letter must appear in the result, with no extra letters and none left over. For example, <strong>LISTEN</strong> can become <em>SILENT</em> or <em>ENLIST</em>.</p></section>
+  <section><h2>How to use it</h2><ol><li>Enter two or more letters.</li><li>Select <strong>Find anagrams</strong>.</li><li>Tap a result to copy it.</li></ol><p>Spaces, numbers and punctuation are ignored, and letter case does not matter.</p></section>
   <section><h2>Duplicate letters</h2><p>Repeated letters are counted precisely. If your input contains two Es, a result may use two Es—but never three. A result must also have exactly the same number of letters as the cleaned input.</p></section>
   <section><h2>Useful limits</h2><p>Word lists differ, so a result is not a guarantee that a particular school, publication or word-game ruleset accepts it. MyToolMint uses an openly licensed general English list and does not include proper nouns.</p></section>
+  <section><h2>Anagram examples</h2><ul><li><strong>LISTEN</strong> can produce <em>silent</em> and <em>enlist</em>.</li><li><strong>REPAID</strong> can produce <em>paired</em>.</li><li>Inputs containing duplicate letters return only words with the same duplicate counts.</li></ul></section>
+  <section><h2>Anagram solver or word unscrambler?</h2><p>Use this page when every letter must be rearranged. Use the <a href={pagePath('/word-unscrambler',base)}>Word Unscrambler</a> when shorter words are also useful, the <a href={pagePath('/word-finder',base)}>Word Finder</a> for rack letters plus a pattern, or the <a href={pagePath('/five-letter-word-finder',base)}>Five-Letter Word Finder</a> for known and excluded positions.</p></section>
+  <section><h2>Frequently asked questions</h2><details><summary>Does the solver use every letter?</summary><p>Yes. Every result has the same letter counts and total length as the cleaned input.</p></details><details><summary>Can I enter a phrase?</summary><p>Spaces, punctuation and numbers are ignored, so letters from a short phrase can be searched together. Results are currently single words.</p></details><details><summary>Are searches sent to a dictionary API?</summary><p>No. The solver checks a local word list in your browser.</p></details></section>
 </ToolLayout>

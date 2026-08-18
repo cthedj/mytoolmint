@@ -2,11 +2,11 @@
 
 Simple tools for everyday problems.
 
-MyToolMint is a fast, accessible utility website with 14 production-ready, client-side tools across words, calculators and converters. Its flagship product is the Word Unscrambler.
+MyToolMint is a fast, accessible utility website with 15 production-ready, client-side tools across words, calculators and converters. Its flagship product is the Word Unscrambler.
 
 ## Launch tools
 
-- Word Unscrambler, Exact Anagram Solver, Word Finder and Word Counter
+- Word Unscrambler, Anagram Solver, Word Finder, Five-Letter Word Finder and Word Counter
 - Percentage, Age, VAT, Budget and Savings calculators
 - Length, Weight, Temperature, Data Storage and Time converters
 

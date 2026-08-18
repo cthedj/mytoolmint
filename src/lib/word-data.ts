@@ -29,3 +29,17 @@ export async function loadWordBuckets(
   );
   return responses.flat();
 }
+
+export async function loadFiveLetterWords(
+  baseUrl = '/',
+  fetcher: FetchLike = fetch,
+): Promise<string[]> {
+  const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const response = await fetcher(`${base}data/words/five-letter.json`);
+  if (!response.ok) throw new Error('Unable to load the five-letter word data.');
+  const words: unknown = await response.json();
+  if (!Array.isArray(words) || words.some((word) => typeof word !== 'string' || !/^[a-z]{5}$/.test(word))) {
+    throw new Error('Invalid five-letter word data.');
+  }
+  return words as string[];
+}

@@ -1,16 +1,22 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { pagePath } from '../lib/site-path';
-interface Props { title:string; description:string; category:string; intro:string; path:string; }
-const {title,description,category,intro,path}=Astro.props;
+interface Props { title:string; metaTitle?:string; description:string; category:string; intro:string; path:string; }
+const {title,metaTitle,description,category,intro,path}=Astro.props;
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const schema={ '@context':'https://schema.org','@type':'WebApplication',name:title,description,applicationCategory:'UtilitiesApplication',operatingSystem:'Any',isAccessibleForFree:true,url:new URL(pagePath(path),'https://mytoolmint.com').toString() };
+const canonicalUrl=new URL(pagePath(path),'https://mytoolmint.com').toString();
+const schema=[
+  { '@context':'https://schema.org','@type':'WebApplication',name:title,description,applicationCategory:'UtilitiesApplication',operatingSystem:'Any',isAccessibleForFree:true,url:canonicalUrl,offers:{'@type':'Offer',price:'0',priceCurrency:'USD'} },
+  { '@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[
+    {'@type':'ListItem',position:1,name:'Tools',item:'https://mytoolmint.com/tools/'},
+    {'@type':'ListItem',position:2,name:title,item:canonicalUrl},
+  ]},
+];
 ---
-<BaseLayout title={`${title} — MyToolMint`} description={description} canonicalPath={path}>
+<BaseLayout title={metaTitle ?? `${title} — MyToolMint`} description={description} canonicalPath={path} schema={schema}>
   <nav class="container crumbs" aria-label="Breadcrumb"><a href={pagePath('/tools',base)}>Tools</a><span aria-hidden="true">/</span><span>{category}</span><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
   <header class="container intro"><p class="eyebrow">{category}</p><h1 class="display-title">{title}</h1><p class="lead">{intro}</p></header>
   <div class="container tool-wrap"><slot name="tool" /></div>
   <article class="container content"><slot /></article>
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
 </BaseLayout>
 <style>.crumbs{display:flex;flex-wrap:wrap;gap:.5rem;padding-top:1.5rem;color:var(--muted);font-size:.85rem}.crumbs a{font-weight:750}.intro{padding-block:clamp(2.75rem,7vw,5rem)}.tool-wrap{max-width:58rem}.content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(2rem,5vw,4rem);padding-block:clamp(4rem,8vw,7rem)}.content :global(section:last-child:nth-child(odd)){grid-column:1/-1}.content :global(h2){margin:0 0 .75rem;font-size:clamp(1.5rem,3vw,2rem);line-height:1.15;letter-spacing:-.03em}.content :global(p),.content :global(li){color:var(--muted)}.content :global(details){padding:1rem 0;border-top:1px solid var(--border)}.content :global(summary){padding:0;color:var(--navy);font-weight:800}@media(max-width:44rem){.content{grid-template-columns:1fr}.content :global(section:last-child:nth-child(odd)){grid-column:auto}}</style>

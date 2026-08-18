@@ -5,7 +5,7 @@ const Heading = headingLevel;
 const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
 ---
 <section class="solver" data-word-unscrambler data-base={base} aria-labelledby="solver-title">
-  <div class="solver-head"><div><p class="eyebrow">Word Unscrambler</p><Heading class="solver-title" id="solver-title">Turn your letters into words</Heading><p>Enter up to 30 letters, using <strong>?</strong> for a blank tile.</p></div><button class="reset" type="button" data-reset>Clear</button></div>
+  <div class="solver-head"><div><p class="eyebrow">Find words from letters</p><Heading class="solver-title" id="solver-title">Word Unscrambler</Heading><p>Unscramble up to 30 letters into words, using <strong>?</strong> for a blank tile.</p></div><button class="reset" type="button" data-reset>Clear</button></div>
   <form data-form novalidate>
     <label class="main-label" for="letters">Your letters</label>
     <div class="search-row"><input id="letters" name="letters" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="60" placeholder="For example: TRA?S" aria-describedby="letters-help letters-error" required/><button type="submit">Find words <span aria-hidden="true">→</span></button></div>

@@ -27,5 +27,8 @@ describe('generated word dataset', () => {
     expect(new Set(allWords).size).toBe(allWords.length);
     const checksum = createHash('sha256').update(`${allWords.join('\n')}\n`).digest('hex');
     expect(checksum).toBe(metadata.contentSha256);
+
+    const fiveLetterWords: string[] = JSON.parse(await readFile(resolve(directory, 'five-letter.json'), 'utf8'));
+    expect(fiveLetterWords).toEqual(allWords.filter((word) => word.length === 5));
   });
 });

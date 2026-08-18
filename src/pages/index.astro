@@ -12,12 +12,12 @@ const schema=[
 ---
 <BaseLayout title="MyToolMint — Simple tools for everyday problems" description="Fast, free word tools, calculators and converters built to solve everyday problems without sign-ups or clutter." canonicalPath="/" schema={schema}>
   <section class="hero container">
-    <div class="hero-copy"><p class="eyebrow">The useful side of the internet</p><h1>Small tools.<br/><span>Big time-savers.</span></h1><p class="lead">Free word tools, calculators and converters that get to the answer quickly—no account, no app and no clutter.</p><div class="actions"><a class="button button-primary" href={url('/tools')}>Explore all 14 tools <span aria-hidden="true">→</span></a><a class="button button-secondary" href="#word-unscrambler">Start with letters</a></div><p class="hero-note"><span aria-hidden="true">●</span> All tools run directly in your browser.</p></div>
+    <div class="hero-copy"><p class="eyebrow">The useful side of the internet</p><h1>Small tools.<br/><span>Big time-savers.</span></h1><p class="lead">Free word tools, calculators and converters that get to the answer quickly—no account, no app and no clutter.</p><div class="actions"><a class="button button-primary" href={url('/tools')}>Explore all {tools.length} tools <span aria-hidden="true">→</span></a><a class="button button-secondary" href="#word-unscrambler">Start with letters</a></div><p class="hero-note"><span aria-hidden="true">●</span> All tools run directly in your browser.</p></div>
     <div class="hero-tool" id="word-unscrambler"><WordUnscrambler headingLevel="h2" /></div>
   </section>
 
   <section class="catalog container" aria-labelledby="catalog-title">
-    <div class="section-head"><div><p class="eyebrow">One tidy toolbox</p><h2 id="catalog-title">Fourteen tools, ready to use.</h2></div><a href={url('/tools')}>View the full directory →</a></div>
+    <div class="section-head"><div><p class="eyebrow">One tidy toolbox</p><h2 id="catalog-title">{tools.length} tools, ready to use.</h2></div><a href={url('/tools')}>View the full directory →</a></div>
     <div class="category-grid">{toolCategories.map((category)=>{
       const categoryTools=tools.filter((tool)=>tool.category===category);
       return <article class="category"><p class="category-count">{categoryTools.length} tools</p><h3>{category}</h3><ul>{categoryTools.map((tool)=><li><a href={url(`/${tool.path}`)}><span class="tool-icon" aria-hidden="true">{tool.icon}</span><span><strong>{tool.name}</strong><small>{tool.description}</small></span><b aria-hidden="true">→</b></a></li>)}</ul></article>;

@@ -3,7 +3,7 @@ import { join, relative } from 'node:path';
 
 const dist = new URL('../dist/', import.meta.url).pathname;
 const requiredRoutes = [
-  'index', 'tools', 'word-unscrambler', 'anagram-solver', 'word-finder', 'word-counter',
+  'index', 'tools', 'word-unscrambler', 'anagram-solver', 'word-finder', 'five-letter-word-finder', 'word-counter',
   'percentage-calculator', 'age-calculator', 'vat-calculator', 'budget-calculator',
   'savings-calculator', 'length-converter', 'weight-converter', 'temperature-converter',
   'data-storage-converter', 'time-converter', 'about', 'contact', 'word-list-and-scoring',
@@ -44,6 +44,16 @@ for (const file of htmlFiles(dist)) {
 }
 
 const indexHtml = readFileSync(join(dist, 'index.html'), 'utf8');
+const seoExpectations = {
+  'word-unscrambler': ['<title>Word Unscrambler:', '>Word Unscrambler</h1>'],
+  'word-finder': ['<title>Word Finder With Letters', '>Word Finder</h1>'],
+  'five-letter-word-finder': ['<title>Five-Letter Word Finder', '>Five-Letter Word Finder</h1>'],
+  'anagram-solver': ['<title>Anagram Solver', '>Anagram Solver</h1>'],
+};
+for (const [route, markers] of Object.entries(seoExpectations)) {
+  const html = readFileSync(join(dist, route, 'index.html'), 'utf8');
+  for (const marker of markers) if (!html.includes(marker)) failures.push(`${route}: missing SEO marker ${marker}`);
+}
 const basePath = indexHtml.includes('href="/mytoolmint/favicon.svg"') ? '/mytoolmint/' : '/';
 for (const file of htmlFiles(dist)) {
   const html = readFileSync(file, 'utf8');

@@ -1,0 +1,49 @@
+---
+import FiveLetterWordFinder from '../components/FiveLetterWordFinder.astro';
+import ToolLayout from '../layouts/ToolLayout.astro';
+import { pagePath } from '../lib/site-path';
+const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
+---
+
+<ToolLayout
+  title="Five-Letter Word Finder"
+  metaTitle="Five-Letter Word Finder — Find 5-Letter Words | MyToolMint"
+  description="Find five-letter words by known positions, included letters and excluded letters. Use ? for unknown positions and narrow the list instantly."
+  category="Word tools"
+  intro="Search five-letter words by pattern, required letters and excluded letters. Every result is filtered locally in your browser."
+  path="/five-letter-word-finder"
+>
+  <FiveLetterWordFinder slot="tool" />
+
+  <section>
+    <h2>How to find five-letter words</h2>
+    <p>Enter the letters you already know in the <strong>Known pattern</strong> field and use a question mark for each unknown position. For example, <strong>S??RE</strong> finds five-letter words that begin with S and end in RE.</p>
+  </section>
+  <section>
+    <h2>Include and exclude letters</h2>
+    <p>Use <strong>Must include</strong> when a letter belongs somewhere in the word but its position is uncertain. Use <strong>Exclude letters</strong> to remove words containing letters you have ruled out. The finder applies every filter together.</p>
+  </section>
+  <section>
+    <h2>Example five-letter searches</h2>
+    <ul>
+      <li><strong>A??ER</strong> finds words with A first, E fourth and R last.</li>
+      <li><strong>?????</strong> with <strong>ST</strong> included finds words containing both S and T.</li>
+      <li><strong>??A??</strong> with <strong>E</strong> included and <strong>IOU</strong> excluded keeps A in the middle and removes three vowels.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Duplicate letters still count</h2>
+    <p>Entering the same required letter twice means the result must contain it twice. A known letter in the pattern also stays fixed in that exact position. This makes the filters useful for words such as <em>eager</em>, <em>tests</em> and <em>array</em>.</p>
+  </section>
+  <section>
+    <h2>Choose the right word tool</h2>
+    <p>Use the <a href={pagePath('/word-unscrambler', base)}>Word Unscrambler</a> when you have a rack of letters and want every shorter word it can make. Use the <a href={pagePath('/word-finder', base)}>Word Finder</a> when rack letters and an optional position pattern must work together. Use the <a href={pagePath('/anagram-solver', base)}>Anagram Solver</a> when every supplied letter must be used exactly once.</p>
+  </section>
+  <section>
+    <h2>Frequently asked questions</h2>
+    <details><summary>What does ? mean?</summary><p>A question mark represents one unknown position. The pattern is always five characters long, so a shorter pattern is automatically completed with question marks.</p></details>
+    <details><summary>Can I share a filtered search?</summary><p>Yes. Run the search and select <strong>Share search</strong>. The filters are stored after the # in the URL, keeping the main page canonical and preventing filtered combinations from becoming separate indexed pages.</p></details>
+    <details><summary>Are results official game words?</summary><p>No. MyToolMint uses a broad, openly licensed general-English list. A particular game, competition or publication may use a different dictionary.</p></details>
+    <details><summary>Does MyToolMint save my letters?</summary><p>No. The search runs in your browser. Shared filters may appear in the page URL, but MyToolMint does not store the search in an application database.</p></details>
+  </section>
+</ToolLayout>
