@@ -1,11 +1,16 @@
 ---
 import ToolLayout from '../layouts/ToolLayout.astro';
 import WordFinder from '../components/WordFinder.astro';
+import { pagePath } from '../lib/site-path';
+const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 ---
-<ToolLayout title="Word Finder" description="Find words from a letter rack, including blank tiles and optional position patterns." category="Word tools" intro="Search your available letters, use up to two blanks, and narrow results with a simple position pattern." path="/word-finder">
+<ToolLayout title="Word Finder" metaTitle="Word Finder With Letters & Patterns | MyToolMint" description="Find words using your available letters, up to two blank tiles and an optional position pattern. Duplicate letters are counted correctly." category="Word tools" intro="Find words with the letters you have, use up to two blanks, and narrow the results with a position pattern." path="/word-finder">
   <WordFinder slot="tool" />
-  <section><h2>Letters, blanks and patterns</h2><p>Enter the letters you have and use <strong>?</strong> for a blank. A separate pattern can fix known positions: <strong>S??RE</strong> means a five-letter word beginning with S and ending in RE.</p></section>
+  <section><h2>Find words with your letters</h2><p>Enter the complete set of letters available to you. MyToolMint returns only words that can be built without using a letter more times than it appears in your rack. Add <strong>?</strong> for an unknown or blank tile.</p></section>
+  <section><h2>Use a position pattern</h2><p>A separate pattern fixes letters in known positions. For example, <strong>S??RE</strong> means a five-letter word beginning with S and ending in RE. The result must match both the pattern and the available rack letters.</p></section>
   <section><h2>How results are ranked</h2><p>Longer words appear first, followed by higher tile values and alphabetical order. The small point total is a generic English tile score for comparing results; tap a result to copy it.</p></section>
   <section><h2>How blanks work</h2><p>Each question mark can stand for one missing letter. MyToolMint supports up to two blanks and still enforces the number of ordinary letters in your rack, including duplicates.</p></section>
-  <section><h2>Word-game use</h2><p>This finder is useful for practising anagrams, checking possible rack combinations and exploring spelling. It is not an official adjudicator, and different games and competitions use different dictionaries.</p></section>
+  <section><h2>Word Finder examples</h2><ul><li><strong>RETAINS</strong> searches every word that can be made from those seven letters.</li><li><strong>ST?RE</strong> allows one missing letter supplied by a blank.</li><li><strong>RETAS?</strong> with the pattern <strong>S??RE</strong> requires the final result to fit those exact positions.</li></ul></section>
+  <section><h2>Other ways to search</h2><p>Use the <a href={pagePath('/word-unscrambler',base)}>Word Unscrambler</a> for advanced length, starts-with, ends-with and contains filters. Use the <a href={pagePath('/five-letter-word-finder',base)}>Five-Letter Word Finder</a> when you know included or excluded letters but do not have a fixed rack. For exact rearrangements, try the <a href={pagePath('/anagram-solver',base)}>Anagram Solver</a>.</p></section>
+  <section><h2>Frequently asked questions</h2><details><summary>Does the finder count duplicate letters?</summary><p>Yes. A result cannot use a letter more times than it appears in your rack unless a question-mark blank supplies the additional letter.</p></details><details><summary>Is the pattern optional?</summary><p>Yes. Leave it empty to find words using only the letters and blanks in your rack.</p></details><details><summary>Are these official competition words?</summary><p>No. Results come from a broad general-English list. Check the dictionary required by your game or competition.</p></details></section>
 </ToolLayout>

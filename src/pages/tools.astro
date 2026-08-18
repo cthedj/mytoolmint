@@ -6,7 +6,7 @@ const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 const url=(value:string)=>pagePath(value,base);
 ---
 <BaseLayout title="All Tools — MyToolMint" description="Browse all free MyToolMint word tools, calculators and unit converters.">
-  <header class="container page-head"><p class="eyebrow">The toolbox</p><h1 class="display-title">Every tool.<br/>Ready when you are.</h1><p class="lead">Fourteen focused utilities for words, everyday maths and unit conversions. Every card below opens a working tool.</p></header>
+  <header class="container page-head"><p class="eyebrow">The toolbox</p><h1 class="display-title">Every tool.<br/>Ready when you are.</h1><p class="lead">{tools.length} focused utilities for words, everyday maths and unit conversions. Every card below opens a working tool.</p></header>
   <div class="container directory">{toolCategories.map((category)=>{
     const entries=tools.filter((tool)=>tool.category===category);
     return <section aria-labelledby={category.toLowerCase().replace(' ','-')}><div class="category-head"><h2 id={category.toLowerCase().replace(' ','-')}>{category}</h2><span>{entries.length} tools</span></div><div class="cards">{entries.map((tool)=><a class="card" href={url(`/${tool.path}`)}><span class="icon" aria-hidden="true">{tool.icon}</span><div><h3>{tool.name}</h3><p>{tool.description}</p></div><b aria-hidden="true">↗</b></a>)}</div></section>;

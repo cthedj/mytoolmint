@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { bucketLettersForInput, loadWordBuckets } from './word-data';
+import { bucketLettersForInput, loadFiveLetterWords, loadWordBuckets } from './word-data';
 
 describe('word data buckets', () => {
   it('loads only unique possible starting-letter buckets', () => {
@@ -22,5 +22,12 @@ describe('word data buckets', () => {
   it('rejects missing or malformed bucket data', async () => {
     await expect(loadWordBuckets('a', '/', async () => new Response('', { status: 404 }))).rejects.toThrow('Unable to load');
     await expect(loadWordBuckets('a', '/', async () => new Response('{}', { status: 200 }))).rejects.toThrow('Invalid word data');
+  });
+
+  it('loads and validates the compact five-letter dataset', async () => {
+    const fetcher = vi.fn(async () => new Response(JSON.stringify(['alert', 'stare']), { status: 200 }));
+    await expect(loadFiveLetterWords('/mytoolmint/', fetcher)).resolves.toEqual(['alert', 'stare']);
+    expect(fetcher).toHaveBeenCalledWith('/mytoolmint/data/words/five-letter.json');
+    await expect(loadFiveLetterWords('/', async () => new Response(JSON.stringify(['four']), { status: 200 }))).rejects.toThrow('Invalid');
   });
 });

@@ -46,6 +46,10 @@ await mkdir(outputDirectory, { recursive: true });
 for (const [letter, entries] of Object.entries(buckets)) {
   await writeFile(join(outputDirectory, `${letter}.json`), `${JSON.stringify(entries)}\n`);
 }
+await writeFile(
+  join(outputDirectory, 'five-letter.json'),
+  `${JSON.stringify(sortedWords.filter((word) => word.length === 5))}\n`,
+);
 
 const metadata = {
   schemaVersion: 1,

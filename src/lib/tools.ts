@@ -8,8 +8,9 @@ export interface ToolEntry {
 
 export const tools: ToolEntry[] = [
   { name: 'Word Unscrambler', description: 'Find every word you can make from a set of letters.', path: 'word-unscrambler', category: 'Word tools', icon: 'Aa' },
-  { name: 'Exact Anagram Solver', description: 'Rearrange every supplied letter into exact anagrams.', path: 'anagram-solver', category: 'Word tools', icon: '⇄' },
+  { name: 'Anagram Solver', description: 'Rearrange every supplied letter into exact anagrams.', path: 'anagram-solver', category: 'Word tools', icon: '⇄' },
   { name: 'Word Finder', description: 'Search a letter rack with blanks and position patterns.', path: 'word-finder', category: 'Word tools', icon: '?' },
+  { name: 'Five-Letter Word Finder', description: 'Find five-letter words by pattern and included or excluded letters.', path: 'five-letter-word-finder', category: 'Word tools', icon: '5' },
   { name: 'Word Counter', description: 'Count words, characters, sentences and reading time.', path: 'word-counter', category: 'Word tools', icon: '#' },
   { name: 'Percentage Calculator', description: 'Solve common percentage questions in three useful modes.', path: 'percentage-calculator', category: 'Calculators', icon: '%' },
   { name: 'Age Calculator', description: 'Calculate calendar age between any two dates.', path: 'age-calculator', category: 'Calculators', icon: '◷' },

@@ -1,0 +1,206 @@
+---
+const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
+---
+
+<section class="panel" data-five-letter-finder data-base={base} aria-labelledby="five-letter-tool-title">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Five-letter search</p>
+      <h2 id="five-letter-tool-title">Find the word that fits</h2>
+      <p>Fix known positions, require letters and remove letters you know are not in the word.</p>
+    </div>
+    <button class="reset" type="button" data-reset>Clear</button>
+  </div>
+
+  <form data-form novalidate>
+    <div class="fields">
+      <label>
+        Known pattern
+        <input name="pattern" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="S??RE" aria-describedby="pattern-help" />
+        <small id="pattern-help">Use letters for known positions and ? for unknowns.</small>
+      </label>
+      <label>
+        Must include
+        <input name="includes" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="AT" />
+        <small>Enter letters that can appear in any position.</small>
+      </label>
+      <label>
+        Exclude letters
+        <input name="excludes" type="text" maxlength="26" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="BCLN" />
+        <small>Remove words containing any of these letters.</small>
+      </label>
+      <label>
+        Sort results
+        <select name="sort">
+          <option value="alphabetical">Alphabetically</option>
+          <option value="score">Highest tile score</option>
+        </select>
+        <small>Tile score is a generic comparison value.</small>
+      </label>
+    </div>
+    <button class="primary" type="submit">Find five-letter words <span aria-hidden="true">→</span></button>
+    <p class="message" data-message role="status" aria-live="polite"></p>
+  </form>
+
+  <section class="results" data-results hidden aria-labelledby="five-letter-results-title">
+    <div class="results-head">
+      <div>
+        <p class="eyebrow">Results</p>
+        <h2 id="five-letter-results-title"><span data-count>0</span> five-letter words</h2>
+        <p data-summary></p>
+      </div>
+      <button class="share" type="button" data-share>Share search</button>
+    </div>
+    <div class="word-grid" data-result-list></div>
+    <button class="load-more" type="button" data-load-more hidden>Show more words</button>
+  </section>
+</section>
+
+<script>
+  import {
+    conflictingFiveLetterFilters,
+    findFiveLetterWords,
+    sanitiseFiveLetterFilter,
+    sanitiseFiveLetterPattern,
+    type FiveLetterResult,
+    type FiveLetterSortMode,
+  } from '../lib/five-letter-finder';
+  import { loadFiveLetterWords } from '../lib/word-data';
+
+  const root = document.querySelector<HTMLElement>('[data-five-letter-finder]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const patternInput = form.elements.namedItem('pattern') as HTMLInputElement;
+    const includesInput = form.elements.namedItem('includes') as HTMLInputElement;
+    const excludesInput = form.elements.namedItem('excludes') as HTMLInputElement;
+    const sortInput = form.elements.namedItem('sort') as HTMLSelectElement;
+    const message = root.querySelector<HTMLElement>('[data-message]')!;
+    const results = root.querySelector<HTMLElement>('[data-results]')!;
+    const resultList = root.querySelector<HTMLElement>('[data-result-list]')!;
+    const loadMore = root.querySelector<HTMLButtonElement>('[data-load-more]')!;
+    const resultCount = root.querySelector<HTMLElement>('[data-count]')!;
+    const resultSummary = root.querySelector<HTMLElement>('[data-summary]')!;
+    const base = root.dataset.base ?? '/';
+    const pageSize = 160;
+    let latest: FiveLetterResult[] = [];
+    let visibleResults = pageSize;
+    let dictionaryRequest: Promise<string[]> | undefined;
+
+    function wordButton(item: FiveLetterResult) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.innerHTML = `<strong>${item.word}</strong><small>${item.score} pts</small>`;
+      button.setAttribute('aria-label', `Copy ${item.word}, tile score ${item.score}`);
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(item.word);
+          message.textContent = `Copied ${item.word}.`;
+        } catch {
+          message.textContent = 'Copy is not available in this browser.';
+        }
+      });
+      return button;
+    }
+
+    function renderResults() {
+      resultList.replaceChildren();
+      if (!latest.length) {
+        const empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = 'No words match every filter. Try replacing a known letter with ? or removing an excluded letter.';
+        resultList.append(empty);
+      } else {
+        latest.slice(0, visibleResults).forEach((item) => resultList.append(wordButton(item)));
+      }
+      loadMore.hidden = visibleResults >= latest.length;
+    }
+
+    function updateUrl(pattern: string, includes: string, excludes: string, sort: FiveLetterSortMode) {
+      const url = new URL(window.location.href);
+      const state = new URLSearchParams();
+      url.search = '';
+      if (pattern !== '?????') state.set('pattern', pattern.toUpperCase());
+      if (includes) state.set('include', includes.toUpperCase());
+      if (excludes) state.set('exclude', excludes.toUpperCase());
+      if (sort !== 'alphabetical') state.set('sort', sort);
+      url.hash = state.toString();
+      history.replaceState(null, '', url);
+    }
+
+    async function search() {
+      const pattern = sanitiseFiveLetterPattern(patternInput.value);
+      const includes = sanitiseFiveLetterFilter(includesInput.value).slice(0, 5);
+      const excludes = sanitiseFiveLetterFilter(excludesInput.value);
+      const sort = sortInput.value as FiveLetterSortMode;
+      const conflicts = conflictingFiveLetterFilters({ pattern, includes, excludes });
+
+      results.hidden = true;
+      if (conflicts.length) {
+        message.textContent = `${conflicts.map((letter) => letter.toUpperCase()).join(', ')} cannot be both required and excluded.`;
+        return;
+      }
+
+      patternInput.value = pattern.toUpperCase();
+      includesInput.value = includes.toUpperCase();
+      excludesInput.value = excludes.toUpperCase();
+      message.textContent = 'Checking the five-letter word list…';
+
+      try {
+        dictionaryRequest ??= loadFiveLetterWords(base);
+        const dictionary = await dictionaryRequest;
+        const found = findFiveLetterWords(dictionary, { pattern, includes, excludes, sort });
+        latest = found.results;
+        visibleResults = pageSize;
+        resultCount.textContent = String(found.total);
+        resultSummary.textContent = `Pattern ${found.pattern.toUpperCase()}${includes ? ` · includes ${includes.toUpperCase()}` : ''}${excludes ? ` · excludes ${excludes.toUpperCase()}` : ''}`;
+        renderResults();
+        updateUrl(found.pattern, includes, excludes, sort);
+        results.hidden = false;
+        message.textContent = `${found.total} five-letter word${found.total === 1 ? '' : 's'} found.`;
+        results.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      } catch {
+        dictionaryRequest = undefined;
+        message.textContent = 'The word list could not be loaded. Please try again.';
+      }
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void search();
+    });
+    root.querySelector('[data-reset]')!.addEventListener('click', () => {
+      form.reset();
+      latest = [];
+      results.hidden = true;
+      message.textContent = '';
+      history.replaceState(null, '', window.location.pathname);
+      patternInput.focus();
+    });
+    loadMore.addEventListener('click', () => {
+      visibleResults += pageSize;
+      renderResults();
+      message.textContent = `Showing ${Math.min(visibleResults, latest.length)} of ${latest.length} words.`;
+    });
+    root.querySelector('[data-share]')!.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        message.textContent = 'Search link copied.';
+      } catch {
+        message.textContent = 'Copy is not available in this browser.';
+      }
+    });
+
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    if ([...params.keys()].length) {
+      patternInput.value = params.get('pattern') ?? '';
+      includesInput.value = params.get('include') ?? '';
+      excludesInput.value = params.get('exclude') ?? '';
+      sortInput.value = params.get('sort') === 'score' ? 'score' : 'alphabetical';
+      void search();
+    }
+  }
+</script>
+
+<style>
+  .panel{padding:clamp(1.25rem,4vw,2rem);border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;box-shadow:var(--shadow)}.panel-head,.results-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.panel-head h2,.results-head h2{margin:0;font-size:clamp(1.65rem,4vw,2.35rem);line-height:1.08;letter-spacing:-.04em}.panel-head p:not(.eyebrow),.results-head p:not(.eyebrow){max-width:42rem;margin:.5rem 0 0;color:var(--muted)}.reset,.share,.load-more{min-height:2.8rem;padding:.55rem .85rem;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--navy-2);font:inherit;font-weight:800}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1.75rem}label{display:flex;flex-direction:column;gap:.35rem;color:var(--navy-2);font-weight:800}input,select{min-height:3.2rem;padding:.7rem .8rem;border:1px solid #b7cac4;border-radius:.7rem;background:#fff;font:inherit;font-weight:800}input{text-transform:uppercase;letter-spacing:.08em}small{color:var(--muted);font-size:.78rem;font-weight:500}.primary{min-height:3.2rem;margin-top:1rem;padding:.7rem 1.1rem;border:0;border-radius:.75rem;background:var(--navy);color:#fff;font:inherit;font-weight:800}.message{min-height:1.5rem;margin:.65rem 0 0;color:var(--muted);font-size:.9rem}.results{scroll-margin-top:1rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}.word-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin-top:1.25rem}.word-grid button{display:flex;min-width:0;min-height:3rem;align-items:center;justify-content:space-between;gap:.5rem;padding:.65rem .7rem;border:1px solid var(--border);border-radius:.7rem;background:#fff;color:var(--navy);font:inherit;text-align:left}.word-grid button:hover{border-color:var(--mint);background:var(--mint-soft)}.word-grid strong{overflow:hidden;text-overflow:ellipsis}.word-grid small{flex:none;padding:.15rem .35rem;border-radius:999px;background:var(--mint-soft);color:var(--mint-dark);font-size:.68rem;font-weight:800}.empty{grid-column:1/-1;padding:1rem;border-radius:var(--radius);background:var(--mint-soft);color:var(--navy-2)}.load-more{display:block;margin:1.25rem auto 0}@media(max-width:46rem){.word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:38rem){.fields{grid-template-columns:1fr}.panel-head,.results-head{display:block}.reset,.share{margin-top:1rem}.word-grid{grid-template-columns:1fr}}
+</style>
