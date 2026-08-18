@@ -6,6 +6,10 @@ describe('word data buckets', () => {
     expect(bucketLettersForInput('T-reaTs!')).toEqual(['a', 'e', 'r', 's', 't']);
   });
 
+  it('loads every starting-letter bucket when a blank tile is supplied', () => {
+    expect(bucketLettersForInput('tra?s')).toEqual('abcdefghijklmnopqrstuvwxyz'.split(''));
+  });
+
   it('joins successfully loaded buckets', async () => {
     const fetcher = vi.fn(async (input: string | URL | Request) => {
       const letter = String(input).match(/([a-z])\.json$/)?.[1];

@@ -1,4 +1,5 @@
 export const MAX_INPUT_LETTERS = 30;
+export const MAX_BLANK_TILES = 2;
 export const MIN_WORD_LENGTH = 2;
 export const MAX_WORD_LENGTH = 21;
 
@@ -40,6 +41,10 @@ export function sanitiseLetters(value: string): string {
   return value.toLowerCase().replace(/[^a-z]/g, '').slice(0, MAX_INPUT_LETTERS);
 }
 
+export function sanitiseTiles(value: string): string {
+  return value.toLowerCase().replace(/[^a-z?]/g, '').slice(0, MAX_INPUT_LETTERS);
+}
+
 export function sanitisePattern(value?: string): string {
   return (value ?? '').toLowerCase().replace(/[^a-z]/g, '');
 }
@@ -47,6 +52,21 @@ export function sanitisePattern(value?: string): string {
 export function tileScore(word: string): number {
   let score = 0;
   for (const letter of word.toLowerCase()) score += TILE_VALUES[letter] ?? 0;
+  return score;
+}
+
+export function tileScoreFromTiles(word: string, letters: string): number {
+  const available = letterCounts(sanitiseTiles(letters).replaceAll('?', ''));
+  const used = new Uint8Array(26);
+  let score = 0;
+
+  for (const letter of word.toLowerCase()) {
+    const index = letter.charCodeAt(0) - 97;
+    if (index < 0 || index >= 26) continue;
+    used[index] += 1;
+    if (used[index] <= available[index]) score += TILE_VALUES[letter] ?? 0;
+  }
+
   return score;
 }
 
@@ -114,10 +134,11 @@ function compareResults(mode: SortMode) {
 }
 
 export function solveWords(dictionary: readonly string[], rawLetters: string, options: SolveOptions = {}): SolveResult {
-  const letters = sanitiseLetters(rawLetters);
+  const letters = sanitiseTiles(rawLetters);
   if (letters.length < MIN_WORD_LENGTH) return { letters, results: [], total: 0 };
 
-  const available = letterCounts(letters);
+  const available = letterCounts(letters.replaceAll('?', ''));
+  const hasWildcards = letters.includes('?');
   const filters = options.filters ?? {};
   const maximumCandidateLength = Math.min(letters.length, normaliseLength(filters.maxLength) ?? MAX_WORD_LENGTH);
   const seen = new Set<string>();
@@ -126,9 +147,10 @@ export function solveWords(dictionary: readonly string[], rawLetters: string, op
   for (const candidate of dictionary) {
     const word = candidate.toLowerCase();
     if (seen.has(word) || word.length < MIN_WORD_LENGTH || word.length > maximumCandidateLength) continue;
-    if (!/^[a-z]+$/.test(word) || !matchesFilters(word, filters) || !canBuildWord(word, available)) continue;
+    const canBuild = hasWildcards ? canBuildWordWithWildcards(word, letters) : canBuildWord(word, available);
+    if (!/^[a-z]+$/.test(word) || !matchesFilters(word, filters) || !canBuild) continue;
     seen.add(word);
-    results.push({ word, length: word.length, score: tileScore(word) });
+    results.push({ word, length: word.length, score: hasWildcards ? tileScoreFromTiles(word, letters) : tileScore(word) });
   }
 
   results.sort(compareResults(options.sort ?? 'longest'));

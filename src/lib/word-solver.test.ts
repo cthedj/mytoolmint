@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { canBuildWord, canBuildWordWithWildcards, groupByLength, letterCounts, sanitiseLetters, solveWords, tileScore } from './word-solver';
+import { canBuildWord, canBuildWordWithWildcards, groupByLength, letterCounts, sanitiseLetters, sanitiseTiles, solveWords, tileScore, tileScoreFromTiles } from './word-solver';
 
-const words = ['a', 'art', 'arts', 'aster', 'ear', 'east', 'eats', 'rate', 'rates', 'seat', 'stare', 'state', 'taste', 'teas', 'treat', 'treats', 'zzz'];
+const words = ['a', 'art', 'arts', 'aster', 'ear', 'east', 'eats', 'rate', 'rates', 'seat', 'stare', 'state', 'taste', 'teas', 'tests', 'treat', 'treats', 'zzz'];
 
 describe('input sanitising', () => {
   it('normalises case, spaces and punctuation', () => expect(sanitiseLetters(' T-Ra eS! ')).toBe('traes'));
   it('removes non-English characters and limits long input', () => expect(sanitiseLetters(`é${'a'.repeat(40)}`)).toHaveLength(30));
+  it('preserves question marks used as blank tiles', () => expect(sanitiseTiles(' ST-A?E! ')).toBe('sta?e'));
 });
 
 describe('letter accounting', () => {
@@ -21,6 +22,15 @@ describe('solver', () => {
     const result = solveWords(words, 'TRAES');
     expect(result.results.map(({ word }) => word)).toContain('stare');
     expect(result.results.map(({ word }) => word)).not.toContain('state');
+  });
+
+  it('uses blank tiles while respecting every supplied letter', () => {
+    const oneBlank = solveWords(words, 'sta?e');
+    expect(oneBlank.results.map(({ word }) => word)).toContain('state');
+    expect(oneBlank.results.map(({ word }) => word)).not.toContain('tests');
+
+    const twoBlanks = solveWords(words, 'sta??');
+    expect(twoBlanks.results.map(({ word }) => word)).toContain('state');
   });
 
   it('supports exact, minimum and maximum lengths', () => {
@@ -55,4 +65,5 @@ describe('solver', () => {
 
 describe('tile score', () => {
   it('uses familiar English tile values', () => expect(tileScore('quiz')).toBe(22));
+  it('scores letters represented by blank tiles as zero', () => expect(tileScoreFromTiles('quiz', 'qui?')).toBe(12));
 });
