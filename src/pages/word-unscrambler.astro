@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WordUnscrambler from '../components/WordUnscrambler.astro';
+import { pagePath } from '../lib/site-path';
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'MyToolMint Word Unscrambler',
-  url: 'https://mytoolmint.com/word-unscrambler',
+  url: 'https://mytoolmint.com/word-unscrambler/',
   description: 'Unscramble letters into valid English words with length and pattern filters.',
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Any',
@@ -20,7 +21,7 @@ const schema = {
     <section><h2>How MyToolMint finds words</h2><p>MyToolMint checks your letters against a local English word list. It counts each supplied letter, so a result is accepted only when every letter it needs is available. It does not generate millions of permutations or send your search to a paid dictionary service.</p><p>For example, <strong>TRAES</strong> can make <em>stare</em>, <em>rates</em> and <em>east</em>. It cannot make <em>state</em>, because STATE needs two Ts.</p></section>
     <section><h2>Using the filters</h2><ul><li><strong>Length:</strong> choose any, exact, minimum, maximum or a range.</li><li><strong>Starts with:</strong> show only words beginning with specific letters.</li><li><strong>Ends with:</strong> narrow results to a particular ending.</li><li><strong>Contains:</strong> require a letter sequence anywhere in the word.</li><li><strong>Sorting:</strong> order by length, alphabetically or by tile score.</li></ul></section>
     <section><h2>Tips for finding more words</h2><ol><li>Start with the longest results, then work down to shorter words.</li><li>Look for familiar beginnings and endings such as RE, UN, ED or ING.</li><li>Pay close attention to duplicate letters.</li><li>Remove restrictive filters if no results appear.</li></ol></section>
-    <section><h2>Word list and tile scores</h2><p>Results come from the MyToolMint English word list, built from licensed American and British English spelling dictionaries. Individual games and competitions may use different dictionaries, so acceptance can vary. Tile scores use familiar English letter-tile values for comparison; MyToolMint is independent and is not affiliated with or endorsed by any word-game publisher. <a href={`${base}word-list-and-scoring`}>Read the dataset and scoring details.</a></p></section>
+    <section><h2>Word list and tile scores</h2><p>Results come from the MyToolMint English word list, built from licensed American and British English spelling dictionaries. Individual games and competitions may use different dictionaries, so acceptance can vary. Tile scores use familiar English letter-tile values for comparison; MyToolMint is independent and is not affiliated with or endorsed by any word-game publisher. <a href={pagePath('/word-list-and-scoring',base)}>Read the dataset and scoring details.</a></p></section>
     <section><h2>Frequently asked questions</h2><details><summary>Does the tool handle repeated letters?</summary><p>Yes. A word can use a letter only as many times as it appears in your input.</p></details><details><summary>Are searches private?</summary><p>The search runs in your browser. Search settings can appear in the page URL when you use or share a search.</p></details><details><summary>Are these official tournament words?</summary><p>No. MyToolMint uses a broad general-English word list. Always check the rules and dictionary used by your particular game.</p></details>
   </article>
 </BaseLayout>

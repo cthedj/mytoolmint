@@ -24,7 +24,7 @@ for (const route of requiredRoutes) {
   if (!existsSync(file)) failures.push(`Missing route output: ${route}`);
   else {
     const html = readFileSync(file, 'utf8');
-    const expectedCanonical = route === 'index' ? 'https://mytoolmint.com/' : `https://mytoolmint.com/${route}`;
+    const expectedCanonical = route === 'index' ? 'https://mytoolmint.com/' : `https://mytoolmint.com/${route}/`;
     if (!html.includes(`<link rel="canonical" href="${expectedCanonical}"`)) failures.push(`${route}: incorrect canonical URL`);
   }
 }
@@ -58,6 +58,7 @@ for (const file of htmlFiles(dist)) {
     const route = target.pathname.slice(basePath.length).replace(/^\/|\/$/g, '');
     if (/\.[a-z0-9]+$/i.test(route)) continue;
     if (!routeSet.has(route)) failures.push(`${name}: broken internal route ${href}`);
+    else if (route && !target.pathname.endsWith('/')) failures.push(`${name}: non-canonical internal route ${href}`);
   }
 }
 

@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { toolCategories, tools } from '../lib/tools';
+import { pagePath } from '../lib/site-path';
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const url=(value:string)=>`${base}${value.replace(/^\//,'')}`;
+const url=(value:string)=>pagePath(value,base);
 ---
 <BaseLayout title="All Tools — MyToolMint" description="Browse all free MyToolMint word tools, calculators and unit converters.">
   <header class="container page-head"><p class="eyebrow">The toolbox</p><h1 class="display-title">Every tool.<br/>Ready when you are.</h1><p class="lead">Fourteen focused utilities for words, everyday maths and unit conversions. Every card below opens a working tool.</p></header>
