@@ -7,11 +7,12 @@ interface Props {
 }
 
 const { title, description, canonicalPath: requestedCanonicalPath, schema } = Astro.props;
+import { pagePath } from '../lib/site-path';
 const productionSite = new URL('https://mytoolmint.com');
 const isPreview = Astro.site?.hostname === 'cthedj.github.io';
 const currentPath = requestedCanonicalPath ?? Astro.url.pathname;
 const canonicalPath = isPreview ? currentPath.replace(/^\/mytoolmint(?=\/|$)/, '') || '/' : currentPath;
-const canonicalUrl = new URL(canonicalPath, productionSite);
+const canonicalUrl = new URL(pagePath(canonicalPath), productionSite);
 const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
 const faviconUrl = `${base}favicon.svg`;
 import Header from '../components/Header.astro';

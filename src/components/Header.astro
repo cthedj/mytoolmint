@@ -1,9 +1,10 @@
 ---
 import Brand from './Brand.astro';
 import { toolCategories, tools } from '../lib/tools';
-const path=Astro.url.pathname;
+import { pagePath } from '../lib/site-path';
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const url=(value:string)=>`${base}${value.startsWith('/')?value.slice(1):value}`;
+const url=(value:string)=>pagePath(value,base);
+const path=pagePath(Astro.url.pathname);
 ---
 <header>
   <div class="container inner">

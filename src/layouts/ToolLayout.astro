@@ -1,12 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { pagePath } from '../lib/site-path';
 interface Props { title:string; description:string; category:string; intro:string; path:string; }
 const {title,description,category,intro,path}=Astro.props;
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const schema={ '@context':'https://schema.org','@type':'WebApplication',name:title,description,applicationCategory:'UtilitiesApplication',operatingSystem:'Any',isAccessibleForFree:true,url:new URL(path,'https://mytoolmint.com').toString() };
+const schema={ '@context':'https://schema.org','@type':'WebApplication',name:title,description,applicationCategory:'UtilitiesApplication',operatingSystem:'Any',isAccessibleForFree:true,url:new URL(pagePath(path),'https://mytoolmint.com').toString() };
 ---
 <BaseLayout title={`${title} — MyToolMint`} description={description} canonicalPath={path}>
-  <nav class="container crumbs" aria-label="Breadcrumb"><a href={`${base}tools`}>Tools</a><span aria-hidden="true">/</span><span>{category}</span><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
+  <nav class="container crumbs" aria-label="Breadcrumb"><a href={pagePath('/tools',base)}>Tools</a><span aria-hidden="true">/</span><span>{category}</span><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
   <header class="container intro"><p class="eyebrow">{category}</p><h1 class="display-title">{title}</h1><p class="lead">{intro}</p></header>
   <div class="container tool-wrap"><slot name="tool" /></div>
   <article class="container content"><slot /></article>

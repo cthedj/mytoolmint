@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegalPage from '../components/LegalPage.astro';
+import { pagePath } from '../lib/site-path';
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
 ---
 <BaseLayout title="Privacy Policy — MyToolMint" description="How MyToolMint handles information when you use its free browser-based tools.">
@@ -12,6 +13,6 @@ const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
     <section><h2>Retention and sharing</h2><p>MyToolMint does not currently maintain an application database containing tool searches or contact submissions. Hosting and GitHub issue records are retained and shared according to GitHub's policies and your choices on GitHub.</p></section>
     <section><h2>Children's privacy</h2><p>MyToolMint is a general-audience utility and is not designed to collect personal information from children. It does not currently offer accounts or a direct submission form.</p></section>
     <section><h2>Changes to this policy</h2><p>This page will be updated before analytics, advertising, forms or other data-handling services are introduced. Material changes will be described here with a new “last updated” date.</p></section>
-    <section><h2>Contact</h2><p>For privacy questions or corrections, use the <a href={`${base}contact`}>contact page</a>.</p></section>
+    <section><h2>Contact</h2><p>For privacy questions or corrections, use the <a href={pagePath('/contact',base)}>contact page</a>.</p></section>
   </LegalPage>
 </BaseLayout>

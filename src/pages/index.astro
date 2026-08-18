@@ -2,8 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WordUnscrambler from '../components/WordUnscrambler.astro';
 import { toolCategories, tools } from '../lib/tools';
+import { pagePath } from '../lib/site-path';
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const url=(value:string)=>`${base}${value.replace(/^\//,'')}`;
+const url=(value:string)=>pagePath(value,base);
 const schema=[
   {'@context':'https://schema.org','@type':'WebSite',name:'MyToolMint',url:'https://mytoolmint.com/',description:'Simple, fast online tools for everyday problems.'},
   {'@context':'https://schema.org','@type':'Organization',name:'MyToolMint',url:'https://mytoolmint.com/',logo:'https://mytoolmint.com/favicon.svg'},

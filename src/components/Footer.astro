@@ -1,8 +1,9 @@
 ---
 import Brand from './Brand.astro';
+import { pagePath } from '../lib/site-path';
 const year=new Date().getFullYear();
 const base=Astro.site?.hostname==='cthedj.github.io'?'/mytoolmint/':'/';
-const url=(value:string)=>`${base}${value.startsWith('/')?value.slice(1):value}`;
+const url=(value:string)=>pagePath(value,base);
 ---
 <footer><div class="container grid"><div><Brand/><p>Simple tools for everyday problems.</p></div><nav class="links" aria-label="Footer"><a href={url('/tools')}>Tools</a><a href={url('/about')}>About</a><a href={url('/contact')}>Contact</a><a href={url('/word-list-and-scoring')}>Word list</a><a href={url('/privacy-policy')}>Privacy</a><a href={url('/cookie-policy')}>Cookies</a><a href={url('/terms-of-use')}>Terms</a><a href={url('/disclaimer')}>Disclaimer</a></nav><p class="copyright">© {year} MyToolMint</p></div></footer>
 <style>footer{margin-top:clamp(4rem,8vw,7rem);padding:2.75rem 0;border-top:1px solid var(--border);background:rgb(255 255 255/.45)}.grid{display:grid;grid-template-columns:1.05fr 1.5fr auto;align-items:end;gap:2rem}p{margin:.75rem 0 0;color:var(--muted)}.links{display:flex;flex-wrap:wrap;gap:.7rem 1rem}.links a{color:var(--muted);font-size:.9rem;font-weight:700;text-decoration:none}.links a:hover{color:var(--mint-dark)}.copyright{white-space:nowrap}@media(max-width:52rem){.grid{grid-template-columns:1fr}.copyright{margin-top:0}}</style>
