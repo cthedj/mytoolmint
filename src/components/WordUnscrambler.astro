@@ -5,11 +5,11 @@ const Heading = headingLevel;
 const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
 ---
 <section class="solver" data-word-unscrambler data-base={base} aria-labelledby="solver-title">
-  <div class="solver-head"><div><p class="eyebrow">Word Unscrambler</p><Heading class="solver-title" id="solver-title">Turn your letters into words</Heading><p>Enter up to 30 letters. Spaces and punctuation are ignored.</p></div><button class="reset" type="button" data-reset>Clear</button></div>
+  <div class="solver-head"><div><p class="eyebrow">Word Unscrambler</p><Heading class="solver-title" id="solver-title">Turn your letters into words</Heading><p>Enter up to 30 letters, using <strong>?</strong> for a blank tile.</p></div><button class="reset" type="button" data-reset>Clear</button></div>
   <form data-form novalidate>
     <label class="main-label" for="letters">Your letters</label>
-    <div class="search-row"><input id="letters" name="letters" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="60" placeholder="For example: TRAES" aria-describedby="letters-help letters-error" required/><button type="submit">Find words <span aria-hidden="true">→</span></button></div>
-    <p id="letters-help" class="help">Tip: repeated letters matter—STATE needs two Ts.</p><p id="letters-error" class="error" data-error role="alert"></p>
+    <div class="search-row"><input id="letters" name="letters" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="60" placeholder="For example: TRA?S" aria-describedby="letters-help letters-error" required/><button type="submit">Find words <span aria-hidden="true">→</span></button></div>
+    <p id="letters-help" class="help">Use up to two <strong>?</strong> characters as blank tiles. Repeated letters still matter.</p><p id="letters-error" class="error" data-error role="alert"></p>
     <details class="filters"><summary>Filters and sorting <span data-filter-count></span></summary><div class="filter-grid">
       <label>Length filter<select name="lengthMode" data-length-mode><option value="any">Any length</option><option value="exact">Exact length</option><option value="minimum">Minimum length</option><option value="maximum">Maximum length</option><option value="range">Length range</option></select></label>
       <label data-min-field hidden>Minimum<input name="minLength" type="number" min="2" max="21" inputmode="numeric" value="2"/></label>
@@ -29,7 +29,7 @@ const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
 </section>
 
 <script>
-  import { groupByLength, sanitiseLetters, solveWords, type SortMode, type WordFilters, type WordResult } from '../lib/word-solver';
+  import { groupByLength, MAX_BLANK_TILES, sanitiseTiles, solveWords, type SortMode, type WordFilters, type WordResult } from '../lib/word-solver';
   import { loadWordBuckets } from '../lib/word-data';
 
   const root = document.querySelector<HTMLElement>('[data-word-unscrambler]');
@@ -86,13 +86,14 @@ const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
     }
 
     async function search() {
-      const letters=sanitiseLetters(lettersInput.value); error.textContent=''; results.hidden=true;empty.hidden=true;
+      const letters=sanitiseTiles(lettersInput.value); const blankCount=[...letters].filter((tile)=>tile==='?').length; error.textContent=''; results.hidden=true;empty.hidden=true;
       if(letters.length<2){error.textContent='Enter at least two letters.';lettersInput.focus();return;}
+      if(blankCount>MAX_BLANK_TILES){error.textContent='Use no more than two blank tiles.';lettersInput.focus();return;}
       if(lengthMode.value==='range'&&field('minLength').valueAsNumber>field('maxLength').valueAsNumber){error.textContent='The minimum length cannot be greater than the maximum.';return;}
       loading.hidden=false;
       try { const dictionary=await loadWordBuckets(letters,base); const sort=(form.elements.namedItem('sort') as HTMLSelectElement).value as SortMode; const solved=solveWords(dictionary,letters,{filters:filters(),sort});latest=solved.results;updateUrl(letters);loading.hidden=true;
         if(!solved.total){empty.hidden=false;status.textContent='No matching words found.';return;}
-        app.querySelector<HTMLElement>('[data-count]')!.textContent=String(solved.total);app.querySelector<HTMLElement>('[data-summary]')!.textContent=`Made from ${letters.toUpperCase()}`;render(solved.results,field('grouped').checked,sort);results.hidden=false;status.textContent=`${solved.total} words found.`;results.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+        app.querySelector<HTMLElement>('[data-count]')!.textContent=String(solved.total);app.querySelector<HTMLElement>('[data-summary]')!.textContent=`Made from ${letters.toUpperCase()}${blankCount?` · ${blankCount} blank tile${blankCount===1?'':'s'}`:''}`;render(solved.results,field('grouped').checked,sort);results.hidden=false;status.textContent=`${solved.total} words found.`;results.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
       } catch { loading.hidden=true;error.textContent='The word list could not be loaded. Please try again.'; }
     }
     form.addEventListener('submit',(event)=>{event.preventDefault();void search();});

@@ -1,8 +1,11 @@
-import { sanitiseLetters } from './word-solver';
+import { sanitiseLetters, sanitiseTiles } from './word-solver';
 
 export type FetchLike = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
 export function bucketLettersForInput(rawLetters: string): string[] {
+  if (sanitiseTiles(rawLetters).includes('?')) return ALPHABET;
   return [...new Set(sanitiseLetters(rawLetters))].sort();
 }
 
