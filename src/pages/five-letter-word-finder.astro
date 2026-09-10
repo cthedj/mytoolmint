@@ -10,18 +10,18 @@ const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
   metaTitle="Five-Letter Word Finder — Find 5-Letter Words | MyToolMint"
   description="Find five-letter words by known positions, included letters and excluded letters. Use ? for unknown positions and narrow the list instantly."
   category="Word tools"
-  intro="Search five-letter words by pattern, required letters and excluded letters. Every result is filtered locally in your browser."
+  intro="Find and filter five-letter words by known positions, included letters and excluded letters. Every result is checked locally in your browser."
   path="/five-letter-word-finder"
 >
   <FiveLetterWordFinder slot="tool" />
 
   <section>
-    <h2>How to find five-letter words</h2>
+    <h2>Filter five-letter words by pattern</h2>
     <p>Enter the letters you already know in the <strong>Known pattern</strong> field and use a question mark for each unknown position. For example, <strong>S??RE</strong> finds five-letter words that begin with S and end in RE.</p>
   </section>
   <section>
-    <h2>Include and exclude letters</h2>
-    <p>Use <strong>Must include</strong> when a letter belongs somewhere in the word but its position is uncertain. Use <strong>Exclude letters</strong> to remove words containing letters you have ruled out. The finder applies every filter together.</p>
+    <h2>Filter by included and excluded letters</h2>
+    <p>Use <strong>Must include</strong> when a letter belongs somewhere in the word but its position is uncertain. Use <strong>Exclude letters</strong> to remove words containing letters you have ruled out. The finder applies every filter together, so you can quickly narrow down a puzzle answer.</p>
   </section>
   <section>
     <h2>Example five-letter searches</h2>
