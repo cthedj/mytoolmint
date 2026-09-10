@@ -1,0 +1,12 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import WordleSolver from '../components/WordleSolver.astro';
+import { pagePath } from '../lib/site-path';
+const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
+---
+<ToolLayout title="Wordle Solver" metaTitle="Wordle Solver — Find Possible Five-Letter Words | MyToolMint" description="Narrow down possible five-letter words with correct positions, misplaced letters and excluded letters. The solver runs in your browser." category="Word tools" intro="Use your Wordle-style feedback to find five-letter words that still fit the clues." path="/wordle-solver">
+  <WordleSolver slot="tool" />
+  <section><h2>How to use the Wordle Solver</h2><p>Enter green letters in their correct positions. Enter a yellow letter under the position where it was tried, then add letters that are absent from the answer to <strong>Excluded letters</strong>. The solver combines every clue in one search.</p></section>
+  <section><h2>Use the right clue</h2><p>A correct-position letter must stay in that exact spot. A misplaced letter must appear somewhere else in the word. Excluded letters are removed from every possible answer. Use <strong>?</strong> for a position that has no clue yet.</p></section>
+  <section><h2>Related word tools</h2><p>Use the <a href={pagePath('/five-letter-word-finder', base)}>Five-Letter Word Finder</a> for a broader pattern and include/exclude search, or visit <a href={pagePath('/word-tools', base)}>Word Tools</a> for Word Finder, anagrams, word counts and more.</p></section>
+</ToolLayout>
