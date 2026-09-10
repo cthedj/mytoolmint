@@ -1,9 +1,10 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const dist = new URL('../dist/', import.meta.url).pathname;
+const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const requiredRoutes = [
-  'index', 'tools', 'word-unscrambler', 'anagram-solver', 'word-finder', 'five-letter-word-finder', 'word-counter',
+  'index', 'tools', 'word-tools', 'word-unscrambler', 'anagram-solver', 'word-finder', 'five-letter-word-finder', 'wordle-solver', 'word-counter',
   'percentage-calculator', 'age-calculator', 'vat-calculator', 'budget-calculator',
   'savings-calculator', 'length-converter', 'weight-converter', 'temperature-converter',
   'data-storage-converter', 'time-converter', 'about', 'contact', 'word-list-and-scoring',
@@ -48,6 +49,7 @@ const seoExpectations = {
   'word-unscrambler': ['<title>Word Unscrambler:', '>Word Unscrambler</h1>'],
   'word-finder': ['<title>Word Finder With Letters', '>Word Finder</h1>'],
   'five-letter-word-finder': ['<title>Five-Letter Word Finder', '>Five-Letter Word Finder</h1>'],
+  'wordle-solver': ['<title>Wordle Solver', '>Wordle Solver</h1>'],
   'anagram-solver': ['<title>Anagram Solver', '>Anagram Solver</h1>'],
 };
 for (const [route, markers] of Object.entries(seoExpectations)) {

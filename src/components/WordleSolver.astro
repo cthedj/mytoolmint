@@ -1,0 +1,68 @@
+---
+const base = Astro.site?.hostname === 'cthedj.github.io' ? '/mytoolmint/' : '/';
+---
+
+<section class="panel" data-wordle-solver data-base={base} aria-labelledby="wordle-tool-title">
+  <div class="panel-head">
+    <div>
+      <p class="eyebrow">Wordle-style search</p>
+      <h2 id="wordle-tool-title">Narrow down the answer</h2>
+      <p>Add the feedback you know, then see five-letter words that still fit.</p>
+    </div>
+    <button class="reset" type="button" data-reset>Clear</button>
+  </div>
+  <form data-form novalidate>
+    <div class="fields">
+      <label>Correct positions<input name="correct" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="?A??E" aria-describedby="correct-help" /><small id="correct-help">Use letters for green tiles and ? for unknown positions.</small></label>
+      <label>Misplaced positions<input name="misplaced" type="text" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="S????" aria-describedby="misplaced-help" /><small id="misplaced-help">Enter a yellow letter where it cannot go; use ? elsewhere.</small></label>
+      <label>Excluded letters<input name="excluded" type="text" maxlength="26" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="TRO" /><small>Remove letters that are not in the answer.</small></label>
+    </div>
+    <button class="primary" type="submit">Find possible words <span aria-hidden="true">→</span></button>
+    <p class="message" data-message role="status" aria-live="polite"></p>
+  </form>
+  <section class="results" data-results hidden aria-labelledby="wordle-results-title">
+    <div><p class="eyebrow">Possible answers</p><h2 id="wordle-results-title"><span data-count>0</span> words fit</h2></div>
+    <div class="word-grid" data-list></div>
+  </section>
+</section>
+
+<script>
+  import { findWordleWords, sanitiseWordleMisplaced } from '../lib/wordle-solver';
+  import { sanitiseFiveLetterPattern } from '../lib/five-letter-finder';
+  import { loadFiveLetterWords } from '../lib/word-data';
+
+  const root = document.querySelector<HTMLElement>('[data-wordle-solver]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const correct = form.elements.namedItem('correct') as HTMLInputElement;
+    const misplaced = form.elements.namedItem('misplaced') as HTMLInputElement;
+    const excluded = form.elements.namedItem('excluded') as HTMLInputElement;
+    const message = root.querySelector<HTMLElement>('[data-message]')!;
+    const results = root.querySelector<HTMLElement>('[data-results]')!;
+    const count = root.querySelector<HTMLElement>('[data-count]')!;
+    const list = root.querySelector<HTMLElement>('[data-list]')!;
+    const base = root.dataset.base ?? '/';
+    let dictionaryRequest: Promise<string[]> | undefined;
+
+    function render(words: { word: string; score: number }[]) {
+      list.replaceChildren();
+      if (!words.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = 'No words fit every clue. Try changing one position or removing an excluded letter.'; list.append(empty); return; }
+      words.slice(0, 180).forEach(({ word, score }) => { const button = document.createElement('button'); button.type = 'button'; button.innerHTML = `<strong>${word}</strong><small>${score} pts</small>`; button.setAttribute('aria-label', `Copy ${word}`); button.addEventListener('click', async () => { try { await navigator.clipboard.writeText(word); message.textContent = `Copied ${word}.`; } catch { message.textContent = 'Copy is not available in this browser.'; } }); list.append(button); });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault(); results.hidden = true;
+      const cleanCorrect = sanitiseFiveLetterPattern(correct.value);
+      const cleanMisplaced = sanitiseWordleMisplaced(misplaced.value);
+      const cleanExcluded = excluded.value.toUpperCase().replace(/[^A-Z]/g, '');
+      const clueLetters = `${cleanCorrect.replaceAll('?', '')}${cleanMisplaced.replaceAll('?', '')}`;
+      const conflicts = [...clueLetters].filter((letter) => cleanExcluded.toLowerCase().includes(letter));
+      if (conflicts.length) { message.textContent = `${[...new Set(conflicts)].join(', ').toUpperCase()} cannot be both a clue and excluded.`; return; }
+      correct.value = cleanCorrect.toUpperCase(); misplaced.value = cleanMisplaced.toUpperCase(); excluded.value = cleanExcluded; message.textContent = 'Checking possible words…';
+      try { dictionaryRequest ??= loadFiveLetterWords(base); const dictionary = await dictionaryRequest; const found = findWordleWords(dictionary, { correct: cleanCorrect, misplaced: cleanMisplaced, excluded: cleanExcluded }); count.textContent = String(found.results.length); render(found.results); results.hidden = false; message.textContent = `${found.results.length} possible word${found.results.length === 1 ? '' : 's'} found.`; } catch { dictionaryRequest = undefined; message.textContent = 'The word list could not be loaded. Please try again.'; }
+    });
+    root.querySelector('[data-reset]')!.addEventListener('click', () => { form.reset(); results.hidden = true; message.textContent = ''; correct.focus(); });
+  }
+</script>
+
+<style>.panel{padding:clamp(1.25rem,4vw,2rem);border:1px solid var(--border);border-radius:var(--radius-lg);background:#fff;box-shadow:var(--shadow)}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.panel-head h2,.results h2{margin:0;font-size:clamp(1.65rem,4vw,2.35rem);line-height:1.08;letter-spacing:-.04em}.panel-head p:not(.eyebrow){max-width:42rem;margin:.5rem 0 0;color:var(--muted)}.reset{min-height:2.8rem;padding:.55rem .85rem;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--navy-2);font:inherit;font-weight:800}.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.75rem}label{display:flex;flex-direction:column;gap:.35rem;color:var(--navy-2);font-weight:800}input{min-height:3.2rem;padding:.7rem .8rem;border:1px solid #b7cac4;border-radius:.7rem;background:#fff;font:inherit;font-weight:800;text-transform:uppercase;letter-spacing:.08em}small{color:var(--muted);font-size:.78rem;font-weight:500}.primary{min-height:3.2rem;margin-top:1rem;padding:.7rem 1.1rem;border:0;border-radius:.75rem;background:var(--navy);color:#fff;font:inherit;font-weight:800}.message{min-height:1.5rem;margin:.65rem 0 0;color:var(--muted);font-size:.9rem}.results{margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}.word-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin-top:1.25rem}.word-grid button{display:flex;min-width:0;min-height:3rem;align-items:center;justify-content:space-between;gap:.5rem;padding:.65rem .7rem;border:1px solid var(--border);border-radius:.7rem;background:#fff;color:var(--navy);font:inherit;text-align:left}.word-grid small{flex:none;padding:.15rem .35rem;border-radius:999px;background:var(--mint-soft);color:var(--mint-dark);font-size:.68rem;font-weight:800}.empty{grid-column:1/-1;padding:1rem;border-radius:var(--radius);background:var(--mint-soft);color:var(--navy-2)}@media(max-width:46rem){.fields{grid-template-columns:1fr}.word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:32rem){.panel-head{display:block}.reset{margin-top:1rem}.word-grid{grid-template-columns:1fr}}</style>
